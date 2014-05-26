@@ -10,9 +10,9 @@
         android:title="@string/action_newGame"/>
     
     <item
-        android:id="@+id/action_invite"
+        android:id="@+id/action_contacts"
         android:orderInCategory="101"
         android:showAsAction="ifRoom"
-        android:title="@string/action_invite"/>
+        android:title="@string/action_contacts"/>
 
 </menu>

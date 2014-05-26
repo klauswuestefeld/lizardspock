@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class RockPaperScissorsMain extends ActionBarActivity {
     
@@ -21,7 +20,7 @@ public class RockPaperScissorsMain extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        playAgain();
+        msg("Rock Paper Scissors", "Challenge a friend", "Invite");
     }
     
     private void playAgain() {
@@ -37,13 +36,16 @@ public class RockPaperScissorsMain extends ActionBarActivity {
         };
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Start game").setMessage("Play again?").setPositiveButton("Yes", dialogClickListener)
-        .setNegativeButton("No", dialogClickListener).show();
+        builder.setTitle("Start game");
+        builder.setMessage("Play again?");
+        builder.setPositiveButton("Yes", dialogClickListener);
+        builder.setNegativeButton("No", dialogClickListener);
+        builder.show();
     }
     
     private void play() {
         if (adversary == null)
-        adversary = rps.pickAdversary();
+        	adversary = rps.pickAdversary();
         
         move = null;
         
@@ -81,7 +83,7 @@ public class RockPaperScissorsMain extends ActionBarActivity {
                 if (move == Move.PAPER && other == Move.ROCK) result = "You Win!";
                 if (result == null) result = "You lose!";
                 
-                msg(result);
+                msg("Gane Over", result, "OK");
             }
         });
     }
@@ -96,16 +98,16 @@ public class RockPaperScissorsMain extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_newGame) {
-            return true;
-            } else if (id == R.id.action_invite) {
-            return true;
+        	playAgain();
+        } else if (id == R.id.action_contacts) {
+        	adversary = rps.pickAdversary();
         }
         return super.onOptionsItemSelected(item);
     }
     
-    private void msg(String msg) {
+    private void msg(String title, String message, String button) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Message").setMessage(msg).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(title).setMessage(message).setPositiveButton(button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             	playAgain();
