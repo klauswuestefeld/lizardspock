@@ -23,10 +23,7 @@ public class RockPaperScissorsMain extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            	playAgain();
-            	
-            	if (adversary == null)
-                	adversary = rps.pickAdversary();
+            	move();
             }
         });
     }
@@ -47,16 +44,20 @@ public class RockPaperScissorsMain extends Activity {
         };
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Start game");
-        builder.setMessage("Play with " + rps.nameFor(adversary) + "?");
+        builder.setMessage("Challenge " + rps.nameFor(adversary) + " again?");
         builder.setPositiveButton("Yes", dialogClickListener);
         builder.setNegativeButton("No", dialogClickListener);
         builder.show();
     }
     
-    private void move() {        
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose your move");
+    private void move() {   
+    	if (adversary == null)
+        	adversary = rps.pickAdversary();
+    	
+    	msg(null, "Wainting for " + rps.nameFor(adversary), "OK");
+    	
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose your move against " + rps.nameFor(adversary));
         builder.setItems(new CharSequence[] 
         {"Rock", "Paper", "Scissors"},
         new DialogInterface.OnClickListener() {
@@ -82,21 +83,22 @@ public class RockPaperScissorsMain extends Activity {
             @Override
             public void handle(Move other) {
                 String result = null;
-                if (move == other) result = "draw";
-                if (move == Move.ROCK && other == Move.SCISSORS) result = "win";
-                if (move == Move.SCISSORS && other == Move.PAPER) result = "win";
-                if (move == Move.PAPER && other == Move.ROCK) result = "win";
-                if (result == null) result = "lose";
+                String resultMessage = null;
+                if (move == other) result = "Draw!";
+                if (move == Move.ROCK && other == Move.SCISSORS) result = "You win!";
+                if (move == Move.SCISSORS && other == Move.PAPER) result = "You win!";
+                if (move == Move.PAPER && other == Move.ROCK) result = "You win!";
+                if (result == null) result = "You lose";
                 
-                if (result == "draw") {
-                	result = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ". Draw";
-                } else if (result == "win") {
-                	result = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ". You win!";
-                } else if (result == "lose") {
-                	result = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ". You lose";
+                if (result == "Draw!") {
+                	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
+                } else if (result == "You win!") {
+                	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
+                } else if (result == "You lose") {
+                	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
                 }
                 
-                msg("Game Over", result, "OK");
+                msg(result, resultMessage, "OK");
             }
         });
     }
