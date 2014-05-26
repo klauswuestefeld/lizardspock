@@ -2,6 +2,7 @@ package sneerteam.tutorial.rockpaperscissors;
 
 public class RockPaperScissorsCloud {
 	 
+	 static boolean TUTORIAL_MODE = false;
 	 public class PublicKey {} //Trocar isso por uma classe PublicKey na Snapi. Networker já tem uma, vale a pena usar a mesma?
 
 	 public interface MoveCallback {
