@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class RockPaperScissorsMain extends ActionBarActivity {
 	
-	 RockPaperScissorsCloud rps = new RockPaperScissorsCloud();
+	RockPaperScissorsCloud rps = new RockPaperScissorsCloud();
 	private PublicKey adversary;
 	private Move move;
 
@@ -23,11 +23,7 @@ public class RockPaperScissorsMain extends ActionBarActivity {
 		
 		playAgain();
 	}
-	
-	
-
-	
-	
+		
 	private void playAgain() {
 		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 		    @Override
@@ -64,23 +60,22 @@ public class RockPaperScissorsMain extends ActionBarActivity {
 	                public void onClick(DialogInterface dialog, int which) {
 	                    switch (which) {
 	                        case 0:
-	                        	move = Move.ROCK;
-	                        	toast(move.toString());
+	                        	moveAgainst(Move.ROCK);
 	                            break;
 	                        case 1:
-	                        	move = Move.PAPER;
-	                        	toast(move.toString());
+	                        	moveAgainst(Move.PAPER);
 	                            break;
 	                        case 2:
-	                        	move = Move.SCISSORS;
-	                        	toast(move.toString());
+	                        	moveAgainst(Move.SCISSORS);	                        	
 	                            break;
 	                    }
 	                }
 	            });
 	    builder.create().show();
-	    
-	    rps.moveAgainst(adversary, move, new RockPaperScissorsCloud.MoveCallback() {
+	}
+	
+	private void moveAgainst(final Move move) {
+		rps.moveAgainst(adversary, move, new RockPaperScissorsCloud.MoveCallback() {
 	    	   @Override
 	    	   public void handle(Move other) {
 	    	    String result = null;
@@ -90,9 +85,9 @@ public class RockPaperScissorsMain extends ActionBarActivity {
 	    	    if (move == Move.PAPER && other == Move.ROCK) result = "You Win!";
 	    	    if (result == null) result = "You lose!";
 	    	    
-	    	    //JOptionPane.showMessageDialog(null, result);
-	    	    //Neste alert acima tem dois botoes: [Same Adversary] e [Other Adversary]
-	    	    // Se escolher other, seta adversary pra null;
+	    	    toast(result);
+
+	    	    playAgain();
 	    	   }
 	    	  });
 	}
