@@ -13,7 +13,6 @@ public class RockPaperScissorsMain extends ActionBarActivity {
     
     RockPaperScissorsCloud rps = new RockPaperScissorsCloud();
     private PublicKey adversary;
-    private Move move;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +45,6 @@ public class RockPaperScissorsMain extends ActionBarActivity {
     private void play() {
         if (adversary == null)
         	adversary = rps.pickAdversary();
-        
-        move = null;
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose your move");
@@ -83,7 +80,7 @@ public class RockPaperScissorsMain extends ActionBarActivity {
                 if (move == Move.PAPER && other == Move.ROCK) result = "You Win!";
                 if (result == null) result = "You lose!";
                 
-                msg("Gane Over", result, "OK");
+                msg("Game Over", result, "OK");
             }
         });
     }
