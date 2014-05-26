@@ -4,8 +4,11 @@ import sneerteam.tutorial.rockpaperscissors.RockPaperScissorsCloud.PublicKey;
 import sneerteam.tutorial.rockpaperscissors.RockPaperScissorsCloud.Move;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,7 +26,7 @@ public class RockPaperScissorsMain extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            	move();
+            	pickAdversary();
             }
         });
     }
@@ -49,13 +52,36 @@ public class RockPaperScissorsMain extends Activity {
         builder.setNegativeButton("No", dialogClickListener);
         builder.show();
     }
-    
-    private void move() {   
+
+    private void pickAdversary() {
     	if (adversary == null)
         	adversary = rps.pickAdversary();
     	
-    	msg(null, "Wainting for " + rps.nameFor(adversary), "OK");
-    	
+    	final ProgressDialog myPd_ring=ProgressDialog.show(this, "Please wait", "Wainting for " + rps.nameFor(adversary) + "...", true);
+        myPd_ring.setCancelable(true);
+        new Thread(new Runnable() {  
+              @Override
+              public void run() {
+                    try
+                    {
+                    	Thread.sleep(3000);   
+                    	handle.sendMessage(handle.obtainMessage());
+                    }catch(Exception e){}
+                    myPd_ring.dismiss();
+              }
+        }).start();
+    }
+    
+    Handler handle=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+              // TODO Auto-generated method stub
+              super.handleMessage(msg);
+              move();
+        }
+  };
+    
+    private void move() {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose your move against " + rps.nameFor(adversary));
         builder.setItems(new CharSequence[] 
