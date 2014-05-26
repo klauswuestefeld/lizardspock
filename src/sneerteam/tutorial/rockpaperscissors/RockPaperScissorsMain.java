@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity {
+public class RockPaperScissorsMain extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
