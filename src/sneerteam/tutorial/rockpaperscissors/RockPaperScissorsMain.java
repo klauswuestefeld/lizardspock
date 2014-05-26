@@ -37,7 +37,7 @@ public class RockPaperScissorsMain extends ActionBarActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                    	play();
+                    	move();
                     	break;
                     case DialogInterface.BUTTON_NEGATIVE:
                     	adversary = null;
@@ -54,10 +54,8 @@ public class RockPaperScissorsMain extends ActionBarActivity {
         builder.show();
     }
     
-    private void play() {        
+    private void move() {        
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose your move");
-        
         builder.setTitle("Choose your move");
         builder.setItems(new CharSequence[] 
         {"Rock", "Paper", "Scissors"},
