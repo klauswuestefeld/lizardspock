@@ -3,10 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="sneerteam.tutorial.rockpaperscissors.MainActivity" >
 
+     <item
+        android:id="@+id/action_newGame"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_newGame"/>
+    
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        android:id="@+id/action_invite"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_invite"/>
 
 </menu>
