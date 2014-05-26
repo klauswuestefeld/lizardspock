@@ -2,19 +2,5 @@
 <resources>
 
     <string name="app_name">Rock Paper Scissors</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_newgame">New game</string>
-    <string name="action_contacts">Invite</string>
-    
-      
-    <string name="move_rock">Rock</string>
-    <string name="move_paper">Paper</string>
-    <string name="move_scissors">Scissors</string>    
-    
-    <string name="msg_challenge">Challenge a Friend</string>  
-    <string name="msg_move">Choose your move</string>
-    <string name="msg_waiting">Waiting</string>
-	<string name="msg_win">You Win!</string>
-	<string name="msg_loose">You Loose!</string>
-
+   
 </resources>

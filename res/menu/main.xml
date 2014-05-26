@@ -3,16 +3,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="sneerteam.tutorial.rockpaperscissors.MainActivity" >
 
-     <item
-        android:id="@+id/action_newgame"
-        android:orderInCategory="101"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_newgame"/>
-    
-    <item
-        android:id="@+id/action_contacts"
-        android:orderInCategory="101"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_contacts"/>
-
 </menu>

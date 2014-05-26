@@ -6,8 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class RockPaperScissorsMain extends ActionBarActivity {
     
@@ -19,11 +19,16 @@ public class RockPaperScissorsMain extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        run();
-    }
-    
-    private void run() {
-    	msg("Rock Paper Scissors", "Challenge a friend", "Invite");
+        Button button = (Button) findViewById(R.id.btnNewGame);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            	playAgain();
+            	
+            	if (adversary == null)
+                	adversary = rps.pickAdversary();
+            }
+        });
     }
     
     private void playAgain() {
@@ -32,24 +37,24 @@ public class RockPaperScissorsMain extends ActionBarActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                    play();
-                    break;
+                    	play();
+                    	break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                    	adversary = null;
+                    	break;
                 }
             }
         };
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Start game");
-        builder.setMessage("Play again?");
+        builder.setMessage("Play with " + rps.nameFor(adversary) + "?");
         builder.setPositiveButton("Yes", dialogClickListener);
         builder.setNegativeButton("No", dialogClickListener);
         builder.show();
     }
     
-    private void play() {
-        if (adversary == null)
-        	adversary = rps.pickAdversary();
-        
+    private void play() {        
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose your move");
         
@@ -79,30 +84,23 @@ public class RockPaperScissorsMain extends ActionBarActivity {
             @Override
             public void handle(Move other) {
                 String result = null;
-                if (move == other) result = "Draw";
-                if (move == Move.ROCK && other == Move.SCISSORS) result = "You Win!";
-                if (move == Move.SCISSORS && other == Move.PAPER) result = "You Win!";
-                if (move == Move.PAPER && other == Move.ROCK) result = "You Win!";
-                if (result == null) result = "You lose!";
+                if (move == other) result = "draw";
+                if (move == Move.ROCK && other == Move.SCISSORS) result = "win";
+                if (move == Move.SCISSORS && other == Move.PAPER) result = "win";
+                if (move == Move.PAPER && other == Move.ROCK) result = "win";
+                if (result == null) result = "lose";
+                
+                if (result == "draw") {
+                	result = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ". Draw";
+                } else if (result == "win") {
+                	result = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ". You win!";
+                } else if (result == "lose") {
+                	result = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ". You lose";
+                }
                 
                 msg("Game Over", result, "OK");
             }
         });
-    }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_newgame) {
-        	run();
-        }
-        return super.onOptionsItemSelected(item);
     }
     
     private void msg(String title, String message, String button) {
