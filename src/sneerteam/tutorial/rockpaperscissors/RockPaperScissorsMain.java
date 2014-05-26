@@ -19,7 +19,11 @@ public class RockPaperScissorsMain extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        msg("Rock Paper Scissors", "Challenge a friend", "Invite");
+        run();
+    }
+    
+    private void run() {
+    	msg("Rock Paper Scissors", "Challenge a friend", "Invite");
     }
     
     private void playAgain() {
@@ -49,7 +53,8 @@ public class RockPaperScissorsMain extends ActionBarActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose your move");
         
-        builder.setTitle("Choose your move").setItems(new CharSequence[]
+        builder.setTitle("Choose your move");
+        builder.setItems(new CharSequence[] 
         {"Rock", "Paper", "Scissors"},
         new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -94,10 +99,8 @@ public class RockPaperScissorsMain extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_newGame) {
-        	playAgain();
-        } else if (id == R.id.action_contacts) {
-        	adversary = rps.pickAdversary();
+        if (id == R.id.action_newgame) {
+        	run();
         }
         return super.onOptionsItemSelected(item);
     }

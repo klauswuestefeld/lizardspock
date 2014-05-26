@@ -4,10 +4,10 @@
     tools:context="sneerteam.tutorial.rockpaperscissors.MainActivity" >
 
      <item
-        android:id="@+id/action_newGame"
+        android:id="@+id/action_newgame"
         android:orderInCategory="101"
         android:showAsAction="ifRoom"
-        android:title="@string/action_newGame"/>
+        android:title="@string/action_newgame"/>
     
     <item
         android:id="@+id/action_contacts"
