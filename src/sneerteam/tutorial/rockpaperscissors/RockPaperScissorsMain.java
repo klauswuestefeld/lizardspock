@@ -2,14 +2,14 @@ package sneerteam.tutorial.rockpaperscissors;
 
 import sneerteam.tutorial.rockpaperscissors.RockPaperScissorsCloud.PublicKey;
 import sneerteam.tutorial.rockpaperscissors.RockPaperScissorsCloud.Move;
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class RockPaperScissorsMain extends ActionBarActivity {
+public class RockPaperScissorsMain extends Activity {
     
     RockPaperScissorsCloud rps = new RockPaperScissorsCloud();
     private PublicKey adversary;
