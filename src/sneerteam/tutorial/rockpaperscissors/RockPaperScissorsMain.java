@@ -37,7 +37,7 @@ public class RockPaperScissorsMain extends ActionBarActivity {
         };
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Play again?").setPositiveButton("Yes", dialogClickListener)
+        builder.setTitle("Start game").setMessage("Play again?").setPositiveButton("Yes", dialogClickListener)
         .setNegativeButton("No", dialogClickListener).show();
     }
     
@@ -81,9 +81,7 @@ public class RockPaperScissorsMain extends ActionBarActivity {
                 if (move == Move.PAPER && other == Move.ROCK) result = "You Win!";
                 if (result == null) result = "You lose!";
                 
-                toast(result);
-                
-                playAgain();
+                msg(result);
             }
         });
     }
@@ -105,8 +103,14 @@ public class RockPaperScissorsMain extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     
-    private void toast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    private void msg(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Message").setMessage(msg).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            	playAgain();
+            }
+        }).show();          
     }
     
 }
