@@ -14,9 +14,10 @@ import android.widget.Button;
 
 public class RockPaperScissorsMain extends Activity {
     
-    RockPaperScissorsCloud rps = new RockPaperScissorsCloud();
+    RockPaperScissorsCloud cloud = new RockPaperScissorsCloud();
     private PublicKey adversary;
-    
+    private Move move;
+        
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +27,7 @@ public class RockPaperScissorsMain extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            	pickAdversary();
+            	move();
             }
         });
     }
@@ -47,65 +48,65 @@ public class RockPaperScissorsMain extends Activity {
         };
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Challenge " + rps.nameFor(adversary) + " again?");
+        builder.setMessage("Challenge " + cloud.nameFor(adversary) + " again?");
         builder.setPositiveButton("Yes", dialogClickListener);
         builder.setNegativeButton("No", dialogClickListener);
         builder.show();
     }
-
-    private void pickAdversary() {
-    	if (adversary == null)
-        	adversary = rps.pickAdversary();
-    	
-    	final ProgressDialog myPd_ring=ProgressDialog.show(this, "Please wait", "Wainting for " + rps.nameFor(adversary) + "...", true);
-        myPd_ring.setCancelable(true);
-        new Thread(new Runnable() {  
-              @Override
-              public void run() {
-                    try
-                    {
-                    	Thread.sleep(3000);   
-                    	handle.sendMessage(handle.obtainMessage());
-                    }catch(Exception e){}
-                    myPd_ring.dismiss();
-              }
-        }).start();
-    }
-    
-    Handler handle=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-              // TODO Auto-generated method stub
-              super.handleMessage(msg);
-              move();
-        }
-  };
-    
+   	
     private void move() {
+    	if (adversary == null)
+        	adversary = cloud.pickAdversary();
+    	
+    	move = null;
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose your move against " + rps.nameFor(adversary));
+        builder.setTitle("Choose your move against " + cloud.nameFor(adversary));
         builder.setItems(new CharSequence[] 
         {"Rock", "Paper", "Scissors"},
         new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                    moveAgainst(Move.ROCK);
-                    break;
+                    	move = Move.ROCK;                    
+                    	break;
                     case 1:
-                    moveAgainst(Move.PAPER);
-                    break;
+                    	move = Move.PAPER;
+                    	break;
                     case 2:
-                    moveAgainst(Move.SCISSORS);
-                    break;
+                    	move = Move.SCISSORS;
+                    	break;
                 }
+                waitForAdversary();
             }
         });
         builder.create().show();
     }
     
+    private void waitForAdversary() {
+    	final ProgressDialog waiting = ProgressDialog.show(this, null, "Wainting for " + cloud.nameFor(adversary) + " move...", true);
+    	waiting.setCancelable(true);
+        new Thread(new Runnable() {  
+              @Override
+              public void run() {
+                    try {
+                    	Thread.sleep(3000);   
+                    	handle.sendMessage(handle.obtainMessage());
+                    } catch(Exception e){}
+                    waiting.dismiss();
+              }
+        }).start();
+    }
+
+    Handler handle = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+              super.handleMessage(msg);
+              moveAgainst(move);
+        }
+    };
+    
     private void moveAgainst(final Move move) {
-        rps.moveAgainst(adversary, move, new RockPaperScissorsCloud.MoveCallback() {
+        cloud.moveAgainst(adversary, move, new RockPaperScissorsCloud.MoveCallback() {
             @Override
             public void handle(Move other) {
                 String result = null;
@@ -117,11 +118,11 @@ public class RockPaperScissorsMain extends Activity {
                 if (result == null) result = "You lose";
                 
                 if (result == "Draw!") {
-                	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
+                	resultMessage = "You used " + move + ". " + cloud.nameFor(adversary) + " used " + other + ".";
                 } else if (result == "You win!") {
-                	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
+                	resultMessage = "You used " + move + ". " + cloud.nameFor(adversary) + " used " + other + ".";
                 } else if (result == "You lose") {
-                	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
+                	resultMessage = "You used " + move + ". " + cloud.nameFor(adversary) + " used " + other + ".";
                 }
                 
                 msg(result, resultMessage, "OK");
