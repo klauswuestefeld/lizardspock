@@ -69,9 +69,7 @@ public class RockPaperScissorsMain extends Activity {
         {"Rock", "Paper", "Scissors"},
         new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) move = Move.ROCK;                    
-                if (which == 1) move = Move.PAPER;                    
-                if (which == 2) move = Move.SCISSORS;                    
+            	move = Move.values()[which];                    
                 waitForAdversary();
             }
         });
