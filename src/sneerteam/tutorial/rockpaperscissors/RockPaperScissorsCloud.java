@@ -22,7 +22,7 @@ public class RockPaperScissorsCloud {
 	}
 
 	public void moveAgainst(PublicKey adversary, Move move, MoveCallback onReply) {
-		//try { Thread.sleep(3000); } catch (InterruptedException e) {}
+		try { Thread.sleep(3000); } catch (InterruptedException e) {}
 		onReply.handle(Move.ROCK);
 	}
 
