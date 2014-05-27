@@ -11,7 +11,7 @@ import android.widget.*;
 
 public class RockPaperScissorsActivity extends Activity {
     
-    private final RockPaperScissors rps = new RockPaperScissors();
+    private final RockPaperScissors rps = new RockPaperScissors(this);
     private Adversary adversary;
     private Move move;
     
