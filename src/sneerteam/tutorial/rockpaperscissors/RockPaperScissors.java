@@ -3,7 +3,6 @@ package sneerteam.tutorial.rockpaperscissors;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.android.schedulers.*;
 
 public class RockPaperScissors {
 
@@ -24,11 +23,11 @@ public class RockPaperScissors {
 
 	
 	public Observable<Adversary> pickAdversary() {
-		return Observable.from(new Adversary()).observeOn(AndroidSchedulers.mainThread());
+		return Observable.from(new Adversary());
 	}
 	
 	public Observable<Move> moveAgainst(Adversary adversary) {
-		return Observable.from(Move.ROCK).delay(3000l, TimeUnit.MILLISECONDS);
+		return Observable.from(Move.ROCK).delay(1000l, TimeUnit.MILLISECONDS);
 	}
 
 }
