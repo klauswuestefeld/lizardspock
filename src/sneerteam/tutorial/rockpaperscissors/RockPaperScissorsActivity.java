@@ -20,11 +20,11 @@ public class RockPaperScissorsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        Button button = (Button) findViewById(R.id.btnNewGame);
+        Button button = (Button)findViewById(R.id.btnNewGame);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            	move();
+            	challenge();
             }
         });
     }
@@ -34,9 +34,7 @@ public class RockPaperScissorsActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             	if (which == DialogInterface.BUTTON_POSITIVE)
-                   	move();
-            	if (which == DialogInterface.BUTTON_NEGATIVE)
-                  	adversary = null;
+                   	chooseMove();
             }
         };
         
@@ -47,18 +45,14 @@ public class RockPaperScissorsActivity extends Activity {
         builder.show();
     }
    	
-    private void move() {
-    	if (adversary == null) {
-        	rps.pickAdversary().observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Adversary>() {
-				@Override
-				public void call(Adversary foe) {
-					adversary = foe;
-					chooseMove();					
-				}
-			});    	
-    	} else {
-    		chooseMove();
-    	}
+    private void challenge() {
+    	rps.pickAdversary().observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Adversary>() {
+			@Override
+			public void call(Adversary foe) {
+				adversary = foe;
+				chooseMove();					
+			}
+		});    	
     }
 
 	private void chooseMove() {
