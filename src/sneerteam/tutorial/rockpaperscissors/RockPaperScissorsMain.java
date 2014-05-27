@@ -105,14 +105,7 @@ public class RockPaperScissorsMain extends Activity {
                 if (move == Move.PAPER && other == Move.ROCK) result = "You win!";
                 if (result == null) result = "You lose";
                 
-                if (result == "Draw!") {
-                	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
-                } else if (result == "You win!") {
-                	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
-                } else if (result == "You lose") {
-                	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
-                }
-                
+               	resultMessage = "You used " + move + ". " + rps.nameFor(adversary) + " used " + other + ".";
                 msg(result, resultMessage, "OK");
             }
         });
