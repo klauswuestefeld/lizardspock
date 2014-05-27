@@ -22,6 +22,10 @@ public class RockPaperScissorsCloud {
 	}
 
 	public void moveAgainst(PublicKey adversary, Move move, MoveCallback onReply) {
+<<<<<<< HEAD
+=======
+		try { Thread.sleep(3000); } catch (InterruptedException e) {}
+>>>>>>> dfe05467400f94f0cd7c844bdef5be0e483b16f5
 		onReply.handle(Move.ROCK);
 	}
 
