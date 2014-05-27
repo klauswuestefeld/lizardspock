@@ -36,14 +36,10 @@ public class RockPaperScissorsMain extends Activity {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                    	move();
-                    	break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                    	adversary = null;
-                    	break;
-                }
+            	if (which == DialogInterface.BUTTON_POSITIVE)
+                   	move();
+            	if (which == DialogInterface.BUTTON_NEGATIVE)
+                  	adversary = null;
             }
         };
         
@@ -65,17 +61,9 @@ public class RockPaperScissorsMain extends Activity {
         {"Rock", "Paper", "Scissors"},
         new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                    	move = Move.ROCK;                    
-                    	break;
-                    case 1:
-                    	move = Move.PAPER;
-                    	break;
-                    case 2:
-                    	move = Move.SCISSORS;
-                    	break;
-                }
+                if (which == 0) move = Move.ROCK;                    
+                if (which == 1) move = Move.PAPER;                    
+                if (which == 2) move = Move.SCISSORS;                    
                 waitForAdversary();
             }
         });
