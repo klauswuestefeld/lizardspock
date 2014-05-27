@@ -2,16 +2,16 @@ package sneerteam.tutorial.rockpaperscissors;
 
 import rx.android.schedulers.*;
 import rx.functions.*;
-import sneerteam.tutorial.rockpaperscissors.RockPaperScissorsCloud.*;
+import sneerteam.tutorial.rockpaperscissors.RockPaperScissors.*;
 import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
 
-public class RockPaperScissorsMain extends Activity {
+public class RockPaperScissorsActivity extends Activity {
     
-    RockPaperScissorsCloud rps = new RockPaperScissorsCloud();
+    RockPaperScissors rps = new RockPaperScissors();
     private Adversary adversary;
     private Move move;
         
@@ -77,7 +77,7 @@ public class RockPaperScissorsMain extends Activity {
 	}
     
     private void waitForAdversary() {
-    	final ProgressDialog waiting = ProgressDialog.show(this, null, "Wainting for " + adversary + "...", true);
+    	final ProgressDialog waiting = ProgressDialog.show(this, null, "Waiting for " + adversary + "...", true);
     	waiting.setCancelable(true);    	
 		rps.moveAgainst(adversary).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Move>() {
 			@Override

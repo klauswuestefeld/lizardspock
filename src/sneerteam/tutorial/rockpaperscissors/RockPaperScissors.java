@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.android.schedulers.*;
 
-public class RockPaperScissorsCloud {
+public class RockPaperScissors {
 
 	static boolean TUTORIAL_MODE = false;
 
