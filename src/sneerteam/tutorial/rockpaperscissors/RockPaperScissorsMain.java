@@ -83,7 +83,7 @@ public class RockPaperScissorsMain extends Activity {
     }
     
     private void waitForAdversary() {
-    	final ProgressDialog waiting = ProgressDialog.show(this, null, "Wainting for " + cloud.nameFor(adversary) + " move...", true);
+    	final ProgressDialog waiting = ProgressDialog.show(this, null, "Wainting for " + cloud.nameFor(adversary) + "...", true);
     	waiting.setCancelable(true);
         new Thread(new Runnable() {  
               @Override
