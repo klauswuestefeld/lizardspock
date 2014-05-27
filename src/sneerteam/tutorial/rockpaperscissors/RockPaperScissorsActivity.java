@@ -11,10 +11,11 @@ import android.widget.*;
 
 public class RockPaperScissorsActivity extends Activity {
     
-    RockPaperScissors rps = new RockPaperScissors();
+    private final RockPaperScissors rps = new RockPaperScissors();
     private Adversary adversary;
     private Move move;
-        
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,27 +30,11 @@ public class RockPaperScissorsActivity extends Activity {
         });
     }
     
-    private void playAgain() {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            	if (which == DialogInterface.BUTTON_POSITIVE)
-                   	chooseMove();
-            }
-        };
-        
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Challenge " + adversary + " again?");
-        builder.setPositiveButton("Yes", dialogClickListener);
-        builder.setNegativeButton("No", dialogClickListener);
-        builder.show();
-    }
-   	
     private void challenge() {
     	rps.pickAdversary().observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Adversary>() {
 			@Override
-			public void call(Adversary foe) {
-				adversary = foe;
+			public void call(Adversary adv) {
+				adversary = adv;
 				chooseMove();					
 			}
 		});    	
@@ -71,35 +56,56 @@ public class RockPaperScissorsActivity extends Activity {
 	}
     
     private void waitForAdversary() {
-    	final ProgressDialog waiting = ProgressDialog.show(this, null, "Waiting for " + adversary + "...", true);
+    	final ProgressDialog waiting = ProgressDialog.show(this, null, "Waiting for " + adversary + "...");
+    	waiting.setIndeterminate(true);
     	waiting.setCancelable(true);    	
 		rps.moveAgainst(adversary).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Move>() {
 			@Override
-			public void call(Move other) {
+			public void call(Move reply) {
 				waiting.dismiss();
-		       
-				String result = null;
-		        String resultMessage = null;
-		        
-		        if (move == other) result = "Draw!";
-		        if (move == Move.ROCK && other == Move.SCISSORS) result = "You win!";
-		        if (move == Move.SCISSORS && other == Move.PAPER) result = "You win!";
-		        if (move == Move.PAPER && other == Move.ROCK) result = "You win!";
-		        if (result == null) result = "You lose";                
-		        
-		       	resultMessage = "You used " + move + ". " + adversary + " used " + other + ".";
-		        msg(result, resultMessage, "OK");
+				onReply(reply);
 		    }
 		});
     }
     
-    private void msg(String title, String message, String button) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title).setMessage(message).setPositiveButton(button, new DialogInterface.OnClickListener() {
+    
+    private void onReply(Move reply) {
+    	String result = result(reply);                
+    	String message = "You used " + move + ". " + adversary + " used " + reply + ".";
+
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(result).setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		    	playAgain();
+		    }
+		}).show();
+    }
+
+    
+	private String result(Move reply) {
+    	if (move == reply) return "Draw!";
+    	
+    	if (move == Move.ROCK     && reply == Move.SCISSORS) return "You win!";
+    	if (move == Move.SCISSORS && reply == Move.PAPER   ) return "You win!";
+    	if (move == Move.PAPER    && reply == Move.ROCK    ) return "You win!";
+    	
+    	return "You lose";
+	}
+    
+    
+    private void playAgain() {
+        DialogInterface.OnClickListener chooseMove = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-            	playAgain();
+            	chooseMove();
             }
-        }).show();
-    }    
+        };
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Challenge " + adversary + " again?");
+        builder.setPositiveButton("Yes", chooseMove);
+        builder.setNegativeButton("No", null);
+        builder.show();
+    }
 }
