@@ -3,10 +3,7 @@ package sneerteam.tutorial.rockpaperscissors;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.functions.*;
-import sneerteam.snapi.*;
 import android.app.*;
-import android.content.*;
 
 class RockPaperScissors {
 
@@ -31,8 +28,7 @@ class RockPaperScissors {
 
 	
 	private final Activity context;
-	private ContactPicker contactPicker;
-	
+		
 	RockPaperScissors(Activity context) {
 		this.context = context;
 	}
@@ -52,7 +48,7 @@ class RockPaperScissors {
 //		});
 	}
 	
-	Observable<Move> moveAgainst(Adversary adversary) {
+	Observable<Move> moveAgainst(String adversary) {
 //Delete this code:
 		alert("Now, to receive your adversary's move, uncomment the code in RockPaperScissors.moveAgainst() and run the app again.");
 		return Observable.empty();
@@ -69,12 +65,6 @@ class RockPaperScissors {
 		    .setCancelable(false)
 		    .setPositiveButton("OK", null)
 		    .create().show();
-	}
-
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (contactPicker != null) {
-			contactPicker.onActivityResult(requestCode, resultCode, data);
-		}
 	}
 
 }
