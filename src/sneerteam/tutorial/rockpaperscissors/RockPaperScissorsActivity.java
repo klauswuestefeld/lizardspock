@@ -13,8 +13,7 @@ public class RockPaperScissorsActivity extends Activity {
     
     private final RockPaperScissors rps = new RockPaperScissors(this);
     private Adversary adversary;
-    private Move move;
-    
+    private Move move;    
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +67,6 @@ public class RockPaperScissorsActivity extends Activity {
 		});
     }
     
-    
     private void onReply(Move reply) {
     	String result = result(reply);                
     	String message = "You used " + move + ". " + adversary + " used " + reply + ".";
@@ -81,7 +79,6 @@ public class RockPaperScissorsActivity extends Activity {
 		    }
 		}).show();
     }
-
     
 	private String result(Move reply) {
     	if (move == reply) return "Draw!";
@@ -91,8 +88,7 @@ public class RockPaperScissorsActivity extends Activity {
     	if (move == Move.PAPER    && reply == Move.ROCK    ) return "You win!";
     	
     	return "You lose";
-	}
-    
+	}    
     
     private void playAgain() {
         DialogInterface.OnClickListener chooseMove = new DialogInterface.OnClickListener() {
