@@ -38,6 +38,13 @@ public class RockPaperScissorsActivity extends Activity {
 			}
 		});    	
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	
+    	rps.onActivityResult(requestCode, resultCode, data);
+    }
 
 	private void chooseMove() {
 		move = null;
@@ -104,4 +111,5 @@ public class RockPaperScissorsActivity extends Activity {
         builder.setNegativeButton("No", null);
         builder.show();
     }
+    
 }

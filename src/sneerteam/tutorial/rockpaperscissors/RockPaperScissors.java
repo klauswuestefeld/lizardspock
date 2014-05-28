@@ -3,15 +3,23 @@ package sneerteam.tutorial.rockpaperscissors;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import android.app.AlertDialog;
-import android.content.Context;
+import rx.functions.*;
+import sneerteam.snapi.*;
+import android.app.*;
+import android.content.*;
 
 class RockPaperScissors {
 
 	class Adversary {
+		private String publicKey;
+
+		public Adversary(String publicKey) {
+			this.publicKey = publicKey;
+		}
+
 		@Override
 		public String toString() {
-			return "Neide";
+			return publicKey;
 		}
 	}
 	
@@ -22,9 +30,10 @@ class RockPaperScissors {
 	enum Move { ROCK, PAPER, SCISSORS }
 
 	
-	private final Context context;
+	private final Activity context;
+	private ContactPicker contactPicker;
 	
-	RockPaperScissors(Context context) {
+	RockPaperScissors(Activity context) {
 		this.context = context;
 	}
 
@@ -33,9 +42,14 @@ class RockPaperScissors {
 		alert("Now, to pick a Sneer contact as an adversary, uncomment the code in RockPaperScissors.pickAdversary() and run the app again.");
 		return Observable.empty();
 
-//Uncomment this code:		
-//		return Observable.from(new Adversary());
-
+//		contactPicker = new ContactPicker();
+//		
+//		return contactPicker.pickContact(context).map(new Func1<String, Adversary>() {
+//			@Override
+//			public Adversary call(String publicKey) {				
+//				return new Adversary(publicKey);
+//			}
+//		});
 	}
 	
 	Observable<Move> moveAgainst(Adversary adversary) {
@@ -55,6 +69,12 @@ class RockPaperScissors {
 		    .setCancelable(false)
 		    .setPositiveButton("OK", null)
 		    .create().show();
+	}
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (contactPicker != null) {
+			contactPicker.onActivityResult(requestCode, resultCode, data);
+		}
 	}
 
 }
