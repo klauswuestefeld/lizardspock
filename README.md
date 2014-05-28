@@ -3,7 +3,7 @@ Sneer API - 5 Minute Tutorial
 
 This project is a simple game of Rock/Paper/Scissors almost ready to play online.
 
-![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/x7FQgFu.png)
+![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png) . ![alt tag](http://i.imgur.com/x7FQgFu.png)
 
 In this tutorial, we are going to add the missing code to use the Sneer cloud.
 
