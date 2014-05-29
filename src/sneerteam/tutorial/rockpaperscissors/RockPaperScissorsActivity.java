@@ -100,9 +100,7 @@ public class RockPaperScissorsActivity extends Activity {
 	
 	
 	private void waitForAdversary() {
-		final ProgressDialog waiting = ProgressDialog.show(this, null, "Waiting for " + adversary + "...");
-		waiting.setIndeterminate(true);
-		waiting.setCancelable(true);		
+		final ProgressDialog waiting = progressDialog("Waiting for " + adversary + "...");		
 		rps.moveAgainst(adversary).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Move>() { @Override public void call(Move reply) {
 			waiting.dismiss();
 			onReply(reply);
@@ -111,40 +109,37 @@ public class RockPaperScissorsActivity extends Activity {
 	
 	
 	private void onReply(Move reply) {
-		String result = result(reply);				
+		String outcome = outcome(reply);				
 		String message = "You used " + move + ". " + adversary + " used " + reply + ".";
 
 		new AlertDialog.Builder(this)
-			.setTitle(result).setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
+			.setTitle(outcome).setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
 				playAgain();
 			}}).show();
 	}
 	
 	
-	private String result(Move reply) {
+	private String outcome(Move reply) {
 		if (move == reply) return "Draw!";
 		
-		if (move == Move.ROCK	 && reply == Move.SCISSORS) return "You win!";
+		if (move == Move.ROCK     && reply == Move.SCISSORS) return "You win!";
 		if (move == Move.SCISSORS && reply == Move.PAPER   ) return "You win!";
-		if (move == Move.PAPER	&& reply == Move.ROCK	) return "You win!";
+		if (move == Move.PAPER    && reply == Move.ROCK    ) return "You win!";
 		
 		return "You lose";
 	}	
 	
 	
 	private void playAgain() {
-		DialogInterface.OnClickListener chooseMove = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				chooseMove();
-			}
-		};
+		DialogInterface.OnClickListener chooseMove = new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
+			chooseMove();
+		}};
 		
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Challenge " + adversary + " again?");
-		builder.setPositiveButton("Yes", chooseMove);
-		builder.setNegativeButton("No", null);
-		builder.show();
+		new AlertDialog.Builder(this)
+			.setMessage("Challenge " + adversary + " again?")
+			.setPositiveButton("Yes", chooseMove)
+			.setNegativeButton("No", null)
+			.show();
 	}
 	
 	
@@ -156,5 +151,13 @@ public class RockPaperScissorsActivity extends Activity {
 	private Button button(int id) {
 		return (Button)findViewById(id);
 	}   
+	
+	
+	private ProgressDialog progressDialog(String message) {
+		ProgressDialog ret = ProgressDialog.show(this, null, message);
+		ret.setIndeterminate(true);
+		ret.setCancelable(true);
+		return ret;
+	}
 }
 
