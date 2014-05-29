@@ -20,13 +20,12 @@ public class RockPaperScissorsActivity extends Activity {
 	private static final String MATCHES = "matches";
 	private static final String CHALLENGES = "challenges";
 
-	private static final int PICK_CONTACT_REQUEST = 100;
-	
 	private final RockPaperScissors rps = new RockPaperScissors(this);
 	private Cloud cloud;
 	private String adversary;
 	private Move move;
 	
+	private int currentRequest = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +64,14 @@ public class RockPaperScissorsActivity extends Activity {
 	
 
 	private void challenge() {
-		ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
+		ContactPicker.startActivityForResult(this, ++currentRequest);
   	}	
   	
 	
   	@Override
   	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
   		super.onActivityResult(requestCode, resultCode, intent);
-  		if (requestCode != PICK_CONTACT_REQUEST) return;
+  		if (requestCode != currentRequest) return;
   		if (resultCode != RESULT_OK) return;
 
 		adversary = ContactPicker.publicKeyFrom(intent);
