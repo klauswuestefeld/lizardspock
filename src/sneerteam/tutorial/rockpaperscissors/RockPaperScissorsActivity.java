@@ -91,7 +91,6 @@ public class RockPaperScissorsActivity extends Activity {
 			Log.d("RockPaperScissors", "-----> testeste 2");
 			toast((String) event);
 			chooseMove();
-			// do stuff
 		}});
 	}
 
