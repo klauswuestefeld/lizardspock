@@ -54,6 +54,15 @@ public class RockPaperScissorsActivity extends Activity {
 		}});		
 	}
 
+	
+	private void onChallengeAccepted(final String contactKey, String id) {
+		chooseMove();
+		cloud.path(contactKey, GAMES, RPS, MATCHES, id).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
+			toast((String) event);
+			// do stuff
+		}});
+	}
+	
 
 	private void challenge() {
   		Intent intent = new Intent("sneerteam.intent.action.PICK_CONTACT");
@@ -162,15 +171,6 @@ public class RockPaperScissorsActivity extends Activity {
 			.setMessage(message)
 			.setItems(items, onClickListener)
 			.show();
-	}
-
-
-	private void onChallengeAccepted(final String contactKey, String id) {
-		chooseMove();
-		cloud.path(contactKey, GAMES, RPS, MATCHES, id).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
-			toast((String) event);
-			// do stuff
-		}});
 	}
 
 
