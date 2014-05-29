@@ -86,12 +86,7 @@ public class RockPaperScissorsActivity extends Activity {
 	private void startMatch() {
 		String match = UUID.randomUUID().toString();
 		cloud.path(GAMES, RPS, CHALLENGES, adversary).pub(match);
-
-		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
-			Log.d("RockPaperScissors", "-----> testeste 2");
-			toast((String) event);
-			chooseMove();
-		}});
+		chooseMove();
 	}
 
  
