@@ -27,12 +27,12 @@ public class RockPaperScissorsActivity extends Activity {
 	private Cloud cloud;
 	private String adversary;
 	private String match;
-	private Move move;	
+	private Move move;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);		
+		setContentView(R.layout.activity_main);
 
 		button(R.id.btnChallenge).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {
 			challenge();
@@ -54,22 +54,22 @@ public class RockPaperScissorsActivity extends Activity {
 					}}
 				);
 			}});
-		}});		
+		}});
 	}
 
-	
+
 	private void onChallengeReceived(final String contactKey, String match, boolean accepted) {
 		Log.d("RockPaperScissorsActivity", "-----> testeste 1");
 		if (!accepted) return;
-		chooseMove();		
+		chooseMove();
 	}
-	
+
 
 	private void challenge() {
 		ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
   	}	
-  	
-	
+
+
   	@Override
   	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
   		super.onActivityResult(requestCode, resultCode, intent);
@@ -86,7 +86,7 @@ public class RockPaperScissorsActivity extends Activity {
 	private void startMatch() {
 		String match = UUID.randomUUID().toString();
 		cloud.path(GAMES, RPS, CHALLENGES, adversary).pub(match);
-		
+
 		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
 			Log.d("RockPaperScissors", "-----> testeste 2");
 			toast((String) event);
@@ -95,7 +95,7 @@ public class RockPaperScissorsActivity extends Activity {
 		}});
 	}
 
-  	
+ 
 	private void chooseMove() {
 		move = null;
 		alert("Choose your move against " + adversary,
@@ -107,8 +107,8 @@ public class RockPaperScissorsActivity extends Activity {
 			}}
 		);
 	}
-	
-	
+
+
 	private void waitForAdversary() {
 		final ProgressDialog waiting = progressDialog("Waiting for " + adversary + "...");		
 		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
@@ -116,8 +116,8 @@ public class RockPaperScissorsActivity extends Activity {
 			onReply(Move.valueOf((String)theirMove));
 		}});
 	}
-	
-	
+
+
 	private void onReply(Move theirMove) {
 		String outcome = outcome(theirMove);				
 		String message = "You used " + move + ". " + adversary + " used " + theirMove + ".";
@@ -126,19 +126,19 @@ public class RockPaperScissorsActivity extends Activity {
 			playAgain();
 		}});
 	}
-	
-	
+
+
 	private String outcome(Move theirMove) {
 		if (move == theirMove) return "Draw!";
-		
+
 		if (move == Move.ROCK     && theirMove == Move.SCISSORS) return "You win!";
 		if (move == Move.SCISSORS && theirMove == Move.PAPER   ) return "You win!";
 		if (move == Move.PAPER    && theirMove == Move.ROCK    ) return "You win!";
-		
+
 		return "You lose";
-	}	
-	
-	
+	}
+
+
 	private void playAgain() {
 		alert("Challenge " + adversary + " again?",
 			options("Yes", "No"),
@@ -147,18 +147,18 @@ public class RockPaperScissorsActivity extends Activity {
 			}}
 		);
 	}
-	
-	
+
+
 	private void toast(String msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 	}
 
-	
+
 	private Button button(int id) {
 		return (Button)findViewById(id);
-	}   
-	
-	
+	}
+
+
 	private ProgressDialog progressDialog(String message) {
 		ProgressDialog ret = ProgressDialog.show(this, null, message);
 		ret.setIndeterminate(true);
