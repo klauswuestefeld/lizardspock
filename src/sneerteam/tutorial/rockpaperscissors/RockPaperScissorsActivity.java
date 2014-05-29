@@ -45,6 +45,7 @@ public class RockPaperScissorsActivity extends Activity {
 			cloud.path(contactKey, GAMES, RPS, CHALLENGES, ":me").value().cast(String.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() { @Override public void call(final String match) {
 				RockPaperScissorsActivity.this.match = match;
 				int makeThisIntoANotificationInsteadOfAnAlert;
+				adversary = contactKey;
 				alert("Challenge from " + contactKey,
 					options("OK", "Cancel"),
 					new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
