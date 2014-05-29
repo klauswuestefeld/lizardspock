@@ -14,13 +14,15 @@ import android.widget.*;
 
 public class RockPaperScissorsActivity extends Activity {
 	
-	private Cloud cloud;
-	private static final String ROOM = "games";
-	private static final String GAME = "rps";
-	private static final String EVENT = "invite";
+	private static final String GAMES = "games";
+	private static final String RPS = "rock-paper-scissors";
+	private static final String MATCHES = "matches";
+	private static final String CHALLENGES = "challenges";
+
 	private static final int PICK_CONTACT_REQUEST = 100;
 	
 	private final RockPaperScissors rps = new RockPaperScissors(this);
+	private Cloud cloud;
 	private String adversary;
 	private Move move;
 	
@@ -37,16 +39,16 @@ public class RockPaperScissorsActivity extends Activity {
 		
 		cloud = Cloud.cloudFor(this);	   
 		
-		cloud.path(":me", "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent contact) {
-			final String contactKey = (String) contact.path().lastSegment();
-			cloud.path(contactKey, GAME, ":me", EVENT).value().cast(String.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() { @Override public void call(String id) {
+		cloud.path(":me", "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
+			final String contactKey = (String)child.path().lastSegment();
+			cloud.path(contactKey, GAMES, RPS, ":me", CHALLENGES).value().cast(String.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() { @Override public void call(String id) {
 				int makeThisIntoANotificationInsteadOfAnAlert;
 				new AlertDialog.Builder(RockPaperScissorsActivity.this)
 					.setTitle("Challenge from " + contactKey)
 					.setNegativeButton("Cancel", null)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int id) {
 						chooseMove();
-						cloud.path(contactKey, GAME, ROOM, id).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
+						cloud.path(contactKey, GAMES, RPS, MATCHES, id).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
 							toast((String) event);
 							// do stuff
 						}});
@@ -72,10 +74,11 @@ public class RockPaperScissorsActivity extends Activity {
   		Bundle extras = intent.getExtras();
 		adversary = extras.get("public_key").toString();
 		toast(adversary);
-		String id = UUID.randomUUID().toString();
-		cloud.path(GAME, adversary, EVENT).pub(id);
+
+		String match = UUID.randomUUID().toString();
+		cloud.path(GAMES, RPS, adversary, CHALLENGES).pub(match);
 		
-		cloud.path(adversary, GAME, ROOM, id).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
+		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
 			toast((String) event);
 			// do stuff
 		}}); 
