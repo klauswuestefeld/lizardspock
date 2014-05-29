@@ -62,9 +62,9 @@ class RockPaperScissors {
 		new AlertDialog.Builder(context)
 			.setTitle("Well done!")
 			.setMessage(message)
-		    .setCancelable(false)
-		    .setPositiveButton("OK", null)
-		    .create().show();
+		.setCancelable(false)
+		.setPositiveButton("OK", null)
+		.create().show();
 	}
 
 }
