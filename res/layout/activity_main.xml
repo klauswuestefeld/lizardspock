@@ -9,7 +9,7 @@
     tools:context="sneerteam.tutorial.rockpaperscissors.MainActivity$PlaceholderFragment" >
 
     <Button
-        android:id="@+id/btnNewGame"
+        android:id="@+id/btnChallenge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -21,7 +21,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnNewGame"
+        android:layout_above="@+id/btnChallenge"
         android:layout_centerHorizontal="true"
         android:text="Rock Paper Scissors"
         android:textAppearance="?android:attr/textAppearanceLarge" />

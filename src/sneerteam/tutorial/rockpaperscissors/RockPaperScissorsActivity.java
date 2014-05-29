@@ -5,16 +5,18 @@ import java.util.*;
 import rx.android.schedulers.*;
 import rx.functions.*;
 import sneerteam.snapi.*;
-import sneerteam.tutorial.rockpaperscissors.RockPaperScissors.*;
 import android.app.*;
 import android.content.*;
 import android.content.DialogInterface.OnClickListener;
 import android.os.*;
+import android.util.*;
 import android.view.*;
 import android.widget.*;
 
 public class RockPaperScissorsActivity extends Activity {
 
+	enum Move { ROCK, PAPER, SCISSORS };
+	
 	private static final String GAMES = "games";
 	private static final String RPS = "rock-paper-scissors";
 	private static final String MATCHES = "matches";
@@ -22,19 +24,17 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private static final int PICK_CONTACT_REQUEST = 100;
 
-	private final RockPaperScissors rps = new RockPaperScissors(this);
 	private Cloud cloud;
 	private String adversary;
-	private Move move;
-	
+	private String match;
+	private Move move;	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);		
 
-		int rename_btnNewGame_to_btnChallenge;
-		button(R.id.btnNewGame).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {
+		button(R.id.btnChallenge).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {
 			challenge();
 		}});
 		
@@ -42,25 +42,25 @@ public class RockPaperScissorsActivity extends Activity {
 		
 		cloud.path(":me", "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
 			final String contactKey = (String)child.path().lastSegment();
-			cloud.path(contactKey, GAMES, RPS, ":me", CHALLENGES).value().cast(String.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() { @Override public void call(final String match) {
+			cloud.path(contactKey, GAMES, RPS, CHALLENGES, ":me").value().cast(String.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() { @Override public void call(final String match) {
+				RockPaperScissorsActivity.this.match = match;
 				int makeThisIntoANotificationInsteadOfAnAlert;
 				alert("Challenge from " + contactKey,
 					options("OK", "Cancel"),
 					new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
-						if (option == 0)
-							onChallengeAccepted(contactKey, match);
-					}});
+						boolean accepted = option == 0;
+						onChallengeReceived(contactKey, match, accepted);
+					}}
+				);
 			}});
 		}});		
 	}
 
 	
-	private void onChallengeAccepted(final String contactKey, String id) {
-		chooseMove();
-		cloud.path(contactKey, GAMES, RPS, MATCHES, id).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
-			toast((String) event);
-			// do stuff
-		}});
+	private void onChallengeReceived(final String contactKey, String match, boolean accepted) {
+		Log.d("RockPaperScissorsActivity", "-----> testeste 1");
+		if (!accepted) return;
+		chooseMove();		
 	}
 	
 
@@ -78,14 +78,21 @@ public class RockPaperScissorsActivity extends Activity {
 		adversary = ContactPicker.publicKeyFrom(intent);
 		toast(adversary);
 
+		startMatch(); 
+  	}
+
+
+	private void startMatch() {
 		String match = UUID.randomUUID().toString();
-		cloud.path(GAMES, RPS, adversary, CHALLENGES).pub(match);
+		cloud.path(GAMES, RPS, CHALLENGES, adversary).pub(match);
 		
 		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
+			Log.d("RockPaperScissors", "-----> testeste 2");
 			toast((String) event);
+			chooseMove();
 			// do stuff
-		}}); 
-  	}
+		}});
+	}
 
   	
 	private void chooseMove() {
@@ -93,7 +100,8 @@ public class RockPaperScissorsActivity extends Activity {
 		alert("Choose your move against " + adversary,
 			options("Rock", "Paper", "Scissors"),
 			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
-				move = Move.values()[option];					
+				move = Move.values()[option];
+				cloud.path(GAMES, RPS, MATCHES, match).pub(move.name());
 				waitForAdversary();
 			}}
 		);
@@ -102,16 +110,16 @@ public class RockPaperScissorsActivity extends Activity {
 	
 	private void waitForAdversary() {
 		final ProgressDialog waiting = progressDialog("Waiting for " + adversary + "...");		
-		rps.moveAgainst(adversary).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Move>() { @Override public void call(Move reply) {
+		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
 			waiting.dismiss();
-			onReply(reply);
+			onReply(Move.valueOf((String)theirMove));
 		}});
 	}
 	
 	
-	private void onReply(Move reply) {
-		String outcome = outcome(reply);				
-		String message = "You used " + move + ". " + adversary + " used " + reply + ".";
+	private void onReply(Move theirMove) {
+		String outcome = outcome(theirMove);				
+		String message = "You used " + move + ". " + adversary + " used " + theirMove + ".";
 
 		alert(outcome, message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
 			playAgain();
@@ -119,12 +127,12 @@ public class RockPaperScissorsActivity extends Activity {
 	}
 	
 	
-	private String outcome(Move reply) {
-		if (move == reply) return "Draw!";
+	private String outcome(Move theirMove) {
+		if (move == theirMove) return "Draw!";
 		
-		if (move == Move.ROCK     && reply == Move.SCISSORS) return "You win!";
-		if (move == Move.SCISSORS && reply == Move.PAPER   ) return "You win!";
-		if (move == Move.PAPER    && reply == Move.ROCK    ) return "You win!";
+		if (move == Move.ROCK     && theirMove == Move.SCISSORS) return "You win!";
+		if (move == Move.SCISSORS && theirMove == Move.PAPER   ) return "You win!";
+		if (move == Move.PAPER    && theirMove == Move.ROCK    ) return "You win!";
 		
 		return "You lose";
 	}	
@@ -134,7 +142,7 @@ public class RockPaperScissorsActivity extends Activity {
 		alert("Challenge " + adversary + " again?",
 			options("Yes", "No"),
 			new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int option) {
-				if (option == 0) chooseMove();
+				if (option == 0) startMatch();
 			}}
 		);
 	}
