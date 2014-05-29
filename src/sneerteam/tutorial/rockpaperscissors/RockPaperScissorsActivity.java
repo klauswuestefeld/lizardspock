@@ -38,7 +38,7 @@ public class RockPaperScissorsActivity extends Activity {
 			challenge();
 		}});
 		
-		cloud = Cloud.cloudObservingOnAndroidMainThread(this);	   
+		cloud = Cloud.onAndroidMainThread(this);	   
 		
 		cloud.path(":me", "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
 			final String contactKey = (String)child.path().lastSegment();
