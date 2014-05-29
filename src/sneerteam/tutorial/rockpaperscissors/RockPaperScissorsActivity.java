@@ -14,18 +14,19 @@ import android.view.*;
 import android.widget.*;
 
 public class RockPaperScissorsActivity extends Activity {
-	
+
 	private static final String GAMES = "games";
 	private static final String RPS = "rock-paper-scissors";
 	private static final String MATCHES = "matches";
 	private static final String CHALLENGES = "challenges";
+
+	private static final int PICK_CONTACT_REQUEST = 100;
 
 	private final RockPaperScissors rps = new RockPaperScissors(this);
 	private Cloud cloud;
 	private String adversary;
 	private Move move;
 	
-	private int currentRequest = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +65,14 @@ public class RockPaperScissorsActivity extends Activity {
 	
 
 	private void challenge() {
-		ContactPicker.startActivityForResult(this, ++currentRequest);
+		ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
   	}	
   	
 	
   	@Override
   	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
   		super.onActivityResult(requestCode, resultCode, intent);
-  		if (requestCode != currentRequest) return;
+  		if (requestCode != PICK_CONTACT_REQUEST) return;
   		if (resultCode != RESULT_OK) return;
 
 		adversary = ContactPicker.publicKeyFrom(intent);
