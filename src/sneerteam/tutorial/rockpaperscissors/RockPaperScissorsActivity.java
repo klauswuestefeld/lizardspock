@@ -38,11 +38,11 @@ public class RockPaperScissorsActivity extends Activity {
 			challenge();
 		}});
 		
-		cloud = Cloud.cloudFor(this);	   
+		cloud = Cloud.cloudObservingOnAndroidMainThread(this);	   
 		
 		cloud.path(":me", "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
 			final String contactKey = (String)child.path().lastSegment();
-			cloud.path(contactKey, GAMES, RPS, CHALLENGES, ":me").value().cast(String.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() { @Override public void call(final String match) {
+			cloud.path(contactKey, GAMES, RPS, CHALLENGES, ":me").value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
 				RockPaperScissorsActivity.this.match = match;
 				int makeThisIntoANotificationInsteadOfAnAlert;
 				adversary = contactKey;
@@ -111,7 +111,7 @@ public class RockPaperScissorsActivity extends Activity {
 	
 	private void waitForAdversary() {
 		final ProgressDialog waiting = progressDialog("Waiting for " + adversary + "...");		
-		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
+		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
 			waiting.dismiss();
 			onReply(Move.valueOf((String)theirMove));
 		}});
