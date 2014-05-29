@@ -65,8 +65,7 @@ public class RockPaperScissorsActivity extends Activity {
 	
 
 	private void challenge() {
-  		Intent intent = new Intent("sneerteam.intent.action.PICK_CONTACT");
-  		startActivityForResult(intent, PICK_CONTACT_REQUEST);
+		ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
   	}	
   	
 	
@@ -76,8 +75,7 @@ public class RockPaperScissorsActivity extends Activity {
   		if (requestCode != PICK_CONTACT_REQUEST) return;
   		if (resultCode != RESULT_OK) return;
 
-  		Bundle extras = intent.getExtras();
-		adversary = extras.get("public_key").toString();
+		adversary = ContactPicker.publicKeyFrom(intent);
 		toast(adversary);
 
 		String match = UUID.randomUUID().toString();
