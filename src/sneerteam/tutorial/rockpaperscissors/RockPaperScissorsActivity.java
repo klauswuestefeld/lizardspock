@@ -8,6 +8,7 @@ import sneerteam.snapi.*;
 import sneerteam.tutorial.rockpaperscissors.RockPaperScissors.*;
 import android.app.*;
 import android.content.*;
+import android.content.DialogInterface.OnClickListener;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -41,19 +42,14 @@ public class RockPaperScissorsActivity extends Activity {
 		
 		cloud.path(":me", "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
 			final String contactKey = (String)child.path().lastSegment();
-			cloud.path(contactKey, GAMES, RPS, ":me", CHALLENGES).value().cast(String.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() { @Override public void call(String id) {
+			cloud.path(contactKey, GAMES, RPS, ":me", CHALLENGES).value().cast(String.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() { @Override public void call(final String match) {
 				int makeThisIntoANotificationInsteadOfAnAlert;
-				new AlertDialog.Builder(RockPaperScissorsActivity.this)
-					.setTitle("Challenge from " + contactKey)
-					.setNegativeButton("Cancel", null)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int id) {
-						chooseMove();
-						cloud.path(contactKey, GAMES, RPS, MATCHES, id).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
-							toast((String) event);
-							// do stuff
-						}});
-					}})
-					.show();
+				alert("Challenge from " + contactKey,
+					options("OK", "Cancel"),
+					new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
+						if (option == 0)
+							onChallengeAccepted(contactKey, match);
+					}});
 			}});
 		}});		
 	}
@@ -87,15 +83,13 @@ public class RockPaperScissorsActivity extends Activity {
   	
 	private void chooseMove() {
 		move = null;
-		new AlertDialog.Builder(this)
-			.setTitle("Choose your move against " + adversary)
-			.setItems(
-				new CharSequence[] {"Rock", "Paper", "Scissors"},
-				new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int which) {
-					move = Move.values()[which];					
-					waitForAdversary();
-				}}
-			).show();
+		alert("Choose your move against " + adversary,
+			options("Rock", "Paper", "Scissors"),
+			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
+				move = Move.values()[option];					
+				waitForAdversary();
+			}}
+		);
 	}
 	
 	
@@ -112,10 +106,9 @@ public class RockPaperScissorsActivity extends Activity {
 		String outcome = outcome(reply);				
 		String message = "You used " + move + ". " + adversary + " used " + reply + ".";
 
-		new AlertDialog.Builder(this)
-			.setTitle(outcome).setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
-				playAgain();
-			}}).show();
+		alert(outcome, message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
+			playAgain();
+		}});
 	}
 	
 	
@@ -131,15 +124,12 @@ public class RockPaperScissorsActivity extends Activity {
 	
 	
 	private void playAgain() {
-		DialogInterface.OnClickListener chooseMove = new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
-			chooseMove();
-		}};
-		
-		new AlertDialog.Builder(this)
-			.setMessage("Challenge " + adversary + " again?")
-			.setPositiveButton("Yes", chooseMove)
-			.setNegativeButton("No", null)
-			.show();
+		alert("Challenge " + adversary + " again?",
+			options("Yes", "No"),
+			new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int option) {
+				if (option == 0) chooseMove();
+			}}
+		);
 	}
 	
 	
@@ -159,5 +149,32 @@ public class RockPaperScissorsActivity extends Activity {
 		ret.setCancelable(true);
 		return ret;
 	}
-}
 
+
+	private void alert(String title, CharSequence[] items, OnClickListener onClickListener) {
+		alert(title, null, items, onClickListener);
+	}
+
+
+	private void alert(String title, CharSequence message, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
+		new AlertDialog.Builder(this)
+			.setTitle(title)
+			.setMessage(message)
+			.setItems(items, onClickListener)
+			.show();
+	}
+
+
+	private void onChallengeAccepted(final String contactKey, String id) {
+		chooseMove();
+		cloud.path(contactKey, GAMES, RPS, MATCHES, id).value().subscribe(new Action1<Object>() { @Override public void call(Object event) {
+			toast((String) event);
+			// do stuff
+		}});
+	}
+
+
+	private CharSequence[] options(CharSequence... options) {
+		return options;
+	}
+}
