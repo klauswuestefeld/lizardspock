@@ -11,7 +11,6 @@ import android.app.*;
 import android.content.*;
 import android.content.DialogInterface.OnClickListener;
 import android.os.*;
-import android.util.*;
 import android.view.*;
 import android.widget.*;
 
