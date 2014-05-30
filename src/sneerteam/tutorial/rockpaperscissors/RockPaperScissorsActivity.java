@@ -94,7 +94,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void startMatch() {
-		String match = UUID.randomUUID().toString();
+		match = UUID.randomUUID().toString();
 		cloud.path(GAMES, RPS, CHALLENGES, adversary).pub(match);
 		chooseMove();
 	}
