@@ -3,15 +3,10 @@ package sneerteam.tutorial.rockpaperscissors;
 import java.util.*;
 import java.util.concurrent.*;
 
-import rx.Observable;
-import rx.Observer;
-import rx.android.schedulers.*;
 import rx.functions.*;
-import rx.observers.*;
 import sneerteam.snapi.*;
 import android.app.*;
 import android.content.*;
-import android.content.DialogInterface.OnClickListener;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -29,8 +24,10 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private Cloud cloud;
 	private String adversary;
+	private String nickname;
 	private String match;
 	private Move move;
+	private AlertDialog currentAlert;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +47,12 @@ public class RockPaperScissorsActivity extends Activity {
 				
 				cloud.path(":me", GAMES, RPS, MATCHES, match).ifAbsent(1000, TimeUnit.MILLISECONDS, new Action0() { @Override public void call() {
                     adversary = contactKey;
-                    final AlertDialog dialog = alert("Challenge from " + contactKey,
-                            options("OK", "Cancel"),
-                            new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
-                                boolean accepted = option == 0;
-                                onChallengeReceived(contactKey, match, accepted);
-                        }}
-                    );
-                    ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String arg0) {
-                        dialog.setTitle("Challenge from " + arg0);
+                    
+                    ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
+						RockPaperScissorsActivity.this.nickname = nickname;
+                    	alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {                    				boolean accepted = option == 0;
+                    		onChallengeReceived(contactKey, match, accepted);
+                    	}});
                     }});
                 }});
 			}});
@@ -84,9 +78,12 @@ public class RockPaperScissorsActivity extends Activity {
   		if (resultCode != RESULT_OK) return;
 
 		adversary = ContactPicker.publicKeyFrom(intent);
-		toast(adversary);
 
-		startMatch(); 
+		ContactUtils.nickname(cloud, adversary).subscribe(new Action1<String>() {
+			@Override public void call(String nickname) {
+				RockPaperScissorsActivity.this.nickname = nickname;
+				startMatch(); 
+            }});
   	}
 
 
@@ -99,7 +96,7 @@ public class RockPaperScissorsActivity extends Activity {
  
 	private void chooseMove() {
 		move = null;
-		alert("Choose your move against " + adversary,
+		alert("Choose your move against " + nickname,
 			options("Rock", "Paper", "Scissors"),
 			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
 				move = Move.values()[option];
@@ -111,7 +108,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void waitForAdversary() {
-		final ProgressDialog waiting = progressDialog("Waiting for " + adversary + "...");		
+		final ProgressDialog waiting = progressDialog("Waiting for " + nickname + "...");		
 		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
 			waiting.dismiss();
 			onReply(Move.valueOf((String)theirMove));
@@ -121,9 +118,9 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private void onReply(Move theirMove) {
 		String outcome = outcome(theirMove);				
-		String message = "You used " + move + ". " + adversary + " used " + theirMove + ".";
+		String message = "You used " + move + ". " + nickname + " used " + theirMove + ".";
 
-		alert(outcome, message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
+		alert(outcome + " " + message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
 			playAgain();
 		}});
 	}
@@ -136,12 +133,12 @@ public class RockPaperScissorsActivity extends Activity {
 		if (move == Move.SCISSORS && theirMove == Move.PAPER   ) return "You win!";
 		if (move == Move.PAPER    && theirMove == Move.ROCK    ) return "You win!";
 
-		return "You lose";
+		return "You lose!";
 	}
 
 
 	private void playAgain() {
-		alert("Challenge " + adversary + " again?",
+		alert("Challenge " + nickname + " again?",
 			options("Yes", "No"),
 			new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int option) {
 				if (option == 0) startMatch();
@@ -168,15 +165,11 @@ public class RockPaperScissorsActivity extends Activity {
 	}
 
 
-	private AlertDialog alert(String title, CharSequence[] items, OnClickListener onClickListener) {
-		return alert(title, null, items, onClickListener);
-	}
-
-
-	private AlertDialog alert(String title, CharSequence message, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
-		return new AlertDialog.Builder(this)
-			.setTitle(title)
-			.setMessage(message)
+	private void alert(String titge, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
+		if (currentAlert != null) currentAlert.dismiss();
+		
+		currentAlert = new AlertDialog.Builder(this)
+			.setTitle(titge)
 			.setItems(items, onClickListener)
 			.show();
 	}
