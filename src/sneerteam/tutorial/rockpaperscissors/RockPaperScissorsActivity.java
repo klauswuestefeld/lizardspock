@@ -6,7 +6,9 @@ import java.util.concurrent.*;
 import rx.Observable;
 import rx.android.schedulers.*;
 import rx.functions.*;
+
 import sneerteam.snapi.*;
+
 import android.app.*;
 import android.content.*;
 import android.content.DialogInterface.OnClickListener;
@@ -70,7 +72,6 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void onChallengeReceived(final String contactKey, String match, boolean accepted) {
-		Log.d("RockPaperScissorsActivity", "-----> testeste 1");
 		if (!accepted) return;
 		chooseMove();
 	}
@@ -78,7 +79,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private void challenge() {
 		ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
-  	}	
+  	}
 
 
   	@Override
