@@ -4,11 +4,11 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.*;
 import rx.functions.*;
-
+import rx.observers.*;
 import sneerteam.snapi.*;
-
 import android.app.*;
 import android.content.*;
 import android.content.DialogInterface.OnClickListener;
@@ -57,6 +57,9 @@ public class RockPaperScissorsActivity extends Activity {
                                 onChallengeReceived(contactKey, match, accepted);
                         }}
                     );
+                    ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String arg0) {
+                        dialog.setTitle("Challenge from " + arg0);
+                    }});
                 }});
 			}});
 		}});
@@ -165,13 +168,13 @@ public class RockPaperScissorsActivity extends Activity {
 	}
 
 
-	private void alert(String title, CharSequence[] items, OnClickListener onClickListener) {
-		alert(title, null, items, onClickListener);
+	private AlertDialog alert(String title, CharSequence[] items, OnClickListener onClickListener) {
+		return alert(title, null, items, onClickListener);
 	}
 
 
-	private void alert(String title, CharSequence message, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
-		new AlertDialog.Builder(this)
+	private AlertDialog alert(String title, CharSequence message, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
+		return new AlertDialog.Builder(this)
 			.setTitle(title)
 			.setMessage(message)
 			.setItems(items, onClickListener)
