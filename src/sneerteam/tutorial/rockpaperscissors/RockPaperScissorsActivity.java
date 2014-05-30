@@ -1,5 +1,7 @@
 package sneerteam.tutorial.rockpaperscissors;
 
+import static sneerteam.snapi.CloudPath.*;
+
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -40,12 +42,12 @@ public class RockPaperScissorsActivity extends Activity {
 		
 		cloud = Cloud.onAndroidMainThread(this);
 		
-		cloud.path(":me", "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
+		cloud.path(ME, "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
 			final String contactKey = (String)child.path().lastSegment();
-			cloud.path(contactKey, GAMES, RPS, CHALLENGES, ":me").value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
+			cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
 				RockPaperScissorsActivity.this.match = match;
 				
-				cloud.path(":me", GAMES, RPS, MATCHES, match).ifAbsent(1000, TimeUnit.MILLISECONDS, new Action0() { @Override public void call() {
+				cloud.path(ME, GAMES, RPS, MATCHES, match).ifAbsent(1000, TimeUnit.MILLISECONDS, new Action0() { @Override public void call() {
                     adversary = contactKey;
                     
                     ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
