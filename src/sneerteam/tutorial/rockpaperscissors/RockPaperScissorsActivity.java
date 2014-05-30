@@ -47,25 +47,17 @@ public class RockPaperScissorsActivity extends Activity {
 			final String contactKey = (String)child.path().lastSegment();
 			cloud.path(contactKey, GAMES, RPS, CHALLENGES, ":me").value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
 				RockPaperScissorsActivity.this.match = match;
-				final Object token = new Object();
-				Observable.merge(cloud.path(":me", GAMES, RPS, MATCHES, match).value(), Observable.from(token).delay(1000, TimeUnit.MILLISECONDS))
-				.first()
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new Action1<Object>() {
-					@Override
-					public void call(Object t1) {
-						if (t1 != token) return;
-
-						adversary = contactKey;
-						alert("Challenge from " + contactKey,
-								options("OK", "Cancel"),
-								new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
-									boolean accepted = option == 0;
-									onChallengeReceived(contactKey, match, accepted);
-							}}
-						);
-					}
-				});
+				
+				cloud.path(":me", GAMES, RPS, MATCHES, match).ifAbsent(1000, TimeUnit.MILLISECONDS, new Action0() { @Override public void call() {
+                    adversary = contactKey;
+                    final AlertDialog dialog = alert("Challenge from " + contactKey,
+                            options("OK", "Cancel"),
+                            new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
+                                boolean accepted = option == 0;
+                                onChallengeReceived(contactKey, match, accepted);
+                        }}
+                    );
+                }});
 			}});
 		}});
 	}
