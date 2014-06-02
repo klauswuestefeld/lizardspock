@@ -61,7 +61,7 @@ cloud.path(ME, "contacts").children().subscribe(new Action1<PathEvent>() { @Over
                     
             ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
 				RockPaperScissorsActivity.this.nickname = nickname;
-                alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {                    				boolean accepted = option == 0;
+                alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) { boolean accepted = option == 0;
                     onChallengeReceived(contactKey, match, accepted);
                 }});
             }});
