@@ -32,7 +32,7 @@ Cloud cloud = new Cloud();
 To challenge a friend for a match we open a contact picker that return a contact. Then we can subscribe to his/her tree and listen to his/her moves:
 ```JAVA
 ...
-ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
+ContactPicker.startActivityForResult(this, 0);
 ...
 
 @Override
@@ -52,10 +52,10 @@ To listen to challenges from friends we do this:
 ```JAVA
 cloud.path(ME, "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
 	final String contactKey = (String)child.path().lastSegment();
-	cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
+	cloud.path(contactKey, "games", "rock-paper-scissors", "challenges", ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
 		RockPaperScissorsActivity.this.match = match;
 		
-		cloud.path(ME, GAMES, RPS, MATCHES, match).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+		cloud.path(ME, "games", "rock-paper-scissors", "matches", match).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 		    if (exists) return;
             adversary = contactKey;
                     
@@ -75,7 +75,7 @@ Then we do that:
 private void chooseMove() {
 ...
     move = Move.values()[option];
-    cloud.path(GAMES, RPS, MATCHES, match).pub(move.name());
+    cloud.path(GAMES, "rock-paper-scissors", "matches", match).pub(move.name());
     waitForAdversary();
 ...
 }
