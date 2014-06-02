@@ -5,7 +5,7 @@ This project is a simple game of Rock/Paper/Scissors ready to play online.
 
 ![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png) . ![alt tag](http://i.imgur.com/x7FQgFu.png)
 
-In this tutorial, you will learn how how to use the Sneer cloud. It's pretty simple but I assume you are familiar with [Reactive Programming](http://en.wikipedia.org/wiki/Reactive_programming). Here is a nice introduction on the subject: [Functional Reactive Programming on Android With RxJava](http://mttkay.github.io/blog/2013/08/25/functional-reactive-programming-on-android-with-rxjava/). You should definitely give it a try.
+In this tutorial, you will learn how how to use the Sneer cloud. It's pretty simple but I assume you are familiar with [Reactive Programming](http://en.wikipedia.org/wiki/Reactive_programming). Here is a nice introduction on the subject: [Observable](https://github.com/Netflix/RxJava/wiki/Observable). You should definitely give it a try.
 
 Getting Started
 ---------------
