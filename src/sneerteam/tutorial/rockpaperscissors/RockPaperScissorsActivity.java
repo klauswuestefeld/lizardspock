@@ -7,6 +7,7 @@ import java.util.concurrent.*;
 
 import rx.functions.*;
 import sneerteam.snapi.*;
+import us.bpsm.edn.*;
 import android.app.*;
 import android.content.*;
 import android.os.*;
@@ -47,7 +48,8 @@ public class RockPaperScissorsActivity extends Activity {
 			cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
 				RockPaperScissorsActivity.this.match = match;
 				
-				cloud.path(ME, GAMES, RPS, MATCHES, match).ifAbsent(1000, TimeUnit.MILLISECONDS, new Action0() { @Override public void call() {
+				cloud.path(ME, GAMES, RPS, MATCHES, match).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+				    if (exists) return;
                     adversary = contactKey;
                     
                     ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
