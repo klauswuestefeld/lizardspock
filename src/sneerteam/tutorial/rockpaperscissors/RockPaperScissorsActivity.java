@@ -7,7 +7,6 @@ import java.util.concurrent.*;
 
 import rx.functions.*;
 import sneerteam.snapi.*;
-import us.bpsm.edn.*;
 import android.app.*;
 import android.content.*;
 import android.os.*;
@@ -148,11 +147,6 @@ public class RockPaperScissorsActivity extends Activity {
 				if (option == 0) startMatch();
 			}}
 		);
-	}
-
-
-	private void toast(String msg) {
-		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 	}
 
 
