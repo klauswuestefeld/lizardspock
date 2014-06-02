@@ -22,7 +22,8 @@ Ok, clone this project using git, import it into your Android Development Toolki
   
 Now open the file RockPaperScissorsActivity.java and take a few minutes to understand the code until you feel confortable with it.
 
-...
+Usage
+-----
 
 To access the cloud:
 
@@ -70,15 +71,20 @@ cloud.path(ME, "contacts").children().subscribe(new Action1<PathEvent>() { @Over
 }});
 ```
 
-Then we do that:
+To pub our move on tree:
 ```JAVA
-private void chooseMove() {
-...
-    move = Move.values()[option];
-    cloud.path(GAMES, "rock-paper-scissors", "matches", match).pub(move.name());
-    waitForAdversary();
-...
+move = Move.values()[option];
+cloud.path(GAMES, "rock-paper-scissors", "matches", match).pub(move.name());
+waitForAdversary();
 }
 ```
 
-etc
+To listen to adversary path tree and wait for his/her move:
+```JAVA
+cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() {@Override public void call(Object theirMove) {
+	waiting.dismiss();
+	onReply(Move.valueOf((String)theirMove));
+}});
+```
+
+That's it. When both players choose their move, we call the method onReply() to compare it and show the result.
