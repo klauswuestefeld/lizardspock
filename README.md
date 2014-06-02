@@ -9,15 +9,13 @@ In this tutorial, you will learn how how to use the Sneer cloud. It's pretty sim
 
 Getting Started
 ---------------
-*As it's a multiplayer game you'll need two emulators (or devices) to test the app.*
+As it's a multiplayer game you'll need two emulators (or devices) to test the app.
 
 Ok, clone this project using git, import it into your Android Development Toolkit workspace and follow the steps below.
 
-  - Create a libs folder in the root folder of your project.
+  - Create a libs folder in the root folder of your project
   
-  - Download the latest snapi-no-deps.jar from [here](#) and add it to the libs folder.
-
-  - Create two emulators
+  - Download the latest snapi-no-deps.jar from [here](#) and add it to the libs folder
 
   - Run the project on both emulators and play with it for a little :)
    
