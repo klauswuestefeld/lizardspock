@@ -27,14 +27,61 @@ Now open the file RockPaperScissorsActivity.java and take a few minutes to under
 To access the cloud:
 
 ```JAVA
+private Cloud cloud;
+...
 Cloud cloud = new Cloud();
 ```
-To challenge a friend for a match:
+To challenge a friend for a match we open a contact picker that return a contact. Then we can subscribe to his/her tree and listen to his/her moves:
 ```JAVA
-cloud.pub...
+private void challenge() {
+    ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
+}
+
+@Override
+public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    ...
+
+	adversary = ContactPicker.publicKeyFrom(intent);
+
+	ContactUtils.nickname(cloud, adversary).subscribe(new Action1<String>() {
+	    @Override public void call(String nickname) {
+			RockPaperScissorsActivity.this.nickname = nickname;
+			startMatch(); 
+        }});
+}
 ```
-To listen to challenges from friends:
+
+To listen to challenges from friends we do this:
 ```JAVA
-cloud.sub…
+cloud.path(ME, "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
+	final String contactKey = (String)child.path().lastSegment();
+	cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
+		RockPaperScissorsActivity.this.match = match;
+		
+		cloud.path(ME, GAMES, RPS, MATCHES, match).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+		    if (exists) return;
+            adversary = contactKey;
+                    
+            ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
+				RockPaperScissorsActivity.this.nickname = nickname;
+                alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {                    				boolean accepted = option == 0;
+                    onChallengeReceived(contactKey, match, accepted);
+                }});
+            }});
+        }});
+	}});
+}});
 ```
+
+Then we do that:
+```JAVA
+private void chooseMove() {
+...
+    move = Move.values()[option];
+    cloud.path(GAMES, RPS, MATCHES, match).pub(move.name());
+    waitForAdversary();
+...
+}
+```
+
 etc
