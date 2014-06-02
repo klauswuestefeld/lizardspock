@@ -31,14 +31,13 @@ Cloud cloud = new Cloud();
 ```
 To challenge a friend for a match we open a contact picker that return a contact. Then we can subscribe to his/her tree and listen to his/her moves:
 ```JAVA
-private void challenge() {
-    ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
-}
+...
+ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
+...
 
 @Override
 public void onActivityResult(int requestCode, int resultCode, Intent intent) {
     ...
-
 	adversary = ContactPicker.publicKeyFrom(intent);
 
 	ContactUtils.nickname(cloud, adversary).subscribe(new Action1<String>() {
