@@ -27,8 +27,6 @@ Now open the file RockPaperScissorsActivity.java and take a few minutes to under
 To access the cloud:
 
 ```JAVA
-private Cloud cloud;
-...
 Cloud cloud = new Cloud();
 ```
 To challenge a friend for a match we open a contact picker that return a contact. Then we can subscribe to his/her tree and listen to his/her moves:
