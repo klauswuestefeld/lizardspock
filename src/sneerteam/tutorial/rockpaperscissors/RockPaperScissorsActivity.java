@@ -30,7 +30,7 @@ public class RockPaperScissorsActivity extends Activity {
 	private String adversary;
 	private String nickname;
 
-	private String match;
+	private String matchTime;
 	private Move move;
 	
 	private AlertDialog currentAlert;
@@ -55,17 +55,17 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void listenToChallengesFrom(final String contactKey) {
-		cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
+		cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String matchTime) {
 			
-			cloud.path(ME, GAMES, RPS, MATCHES, match).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+			cloud.path(ME, GAMES, RPS, MATCHES, matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 			    if (exists) return;
-			    RockPaperScissorsActivity.this.match = match;
+			    RockPaperScissorsActivity.this.matchTime = matchTime;
 		        adversary = contactKey;
 		        
 		        ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
 					RockPaperScissorsActivity.this.nickname = nickname;
 		        	alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {                    				boolean accepted = option == 0;
-		        		onChallengeReceived(contactKey, match, accepted);
+		        		onChallengeReceived(contactKey, matchTime, accepted);
 		        	}});
 		        }});
 		    }});
@@ -73,7 +73,7 @@ public class RockPaperScissorsActivity extends Activity {
 	}
 
 
-	private void onChallengeReceived(final String contactKey, String match, boolean accepted) {
+	private void onChallengeReceived(final String contactKey, String matchTime, boolean accepted) {
 		if (!accepted) return;
 		chooseMove();
 	}
@@ -99,8 +99,8 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void startMatch() {
-		match = UUID.randomUUID().toString();
-		cloud.path(GAMES, RPS, CHALLENGES, adversary).pub(match);
+		matchTime = UUID.randomUUID().toString();
+		cloud.path(GAMES, RPS, CHALLENGES, adversary).pub(matchTime);
 		chooseMove();
 	}
 
@@ -111,7 +111,7 @@ public class RockPaperScissorsActivity extends Activity {
 			options("Rock", "Paper", "Scissors"),
 			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
 				move = Move.values()[option];
-				cloud.path(GAMES, RPS, MATCHES, match).pub(move.name());
+				cloud.path(GAMES, RPS, MATCHES, matchTime).pub(move.name());
 				waitForAdversary();
 			}}
 		);
@@ -120,7 +120,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private void waitForAdversary() {
 		final ProgressDialog waiting = progressDialog("Waiting for " + nickname + "...");		
-		cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
+		cloud.path(adversary, GAMES, RPS, MATCHES, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
 			waiting.dismiss();
 			onReply(Move.valueOf((String)theirMove));
 		}});
