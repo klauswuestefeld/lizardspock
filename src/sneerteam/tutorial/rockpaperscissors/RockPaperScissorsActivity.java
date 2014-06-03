@@ -41,13 +41,13 @@ public class RockPaperScissorsActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		button(R.id.btnChallenge).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {
-			challenge();
+			challengeSomeFriend();
 		}});
 		
 		cloud = Cloud.onAndroidMainThread(this);
 		
 		cloud.path(ME, "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
-			final String contactKey = (String)child.path().lastSegment();
+			String contactKey = (String)child.path().lastSegment();
 			listenToChallengesFrom(contactKey);
 		}});
 	}
@@ -58,24 +58,16 @@ public class RockPaperScissorsActivity extends Activity {
 			
 			cloud.path(ME, GAMES, RPS, MATCHES, matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 			    if (exists) return;
-			    onChallengeReceived(contactKey, matchTime);
+			    
+			    adversary = contactKey;
+			    RockPaperScissorsActivity.this.matchTime = matchTime;
+			    startMatch();
 		    }});
 		}});
 	}
 	
 	
-	private void onChallengeReceived(final String contactKey, Long matchTime) {
-		RockPaperScissorsActivity.this.matchTime = matchTime;
-		adversary = contactKey;
-		
-		ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
-			RockPaperScissorsActivity.this.nickname = nickname;
-			chooseMove();
-		}});
-	}
-
-
-	private void challenge() {
+	private void challengeSomeFriend() {
 		ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
   	}
   	@Override
@@ -85,19 +77,23 @@ public class RockPaperScissorsActivity extends Activity {
   		if (resultCode != RESULT_OK) return;
 
 		adversary = ContactPicker.publicKeyFrom(intent);
-
-		ContactUtils.nickname(cloud, adversary).subscribe(new Action1<String>() {
-			@Override public void call(String nickname) {
-				RockPaperScissorsActivity.this.nickname = nickname;
-				startMatch(); 
-            }});
+		challengeAdversary();
   	}
 
 
-	private void startMatch() {
+	private void challengeAdversary() {
 		matchTime = System.currentTimeMillis();
 		cloud.path(GAMES, RPS, CHALLENGES, adversary).pub(matchTime);
-		chooseMove();
+		startMatch();
+	}
+
+
+	private void startMatch() {
+		ContactUtils.nickname(cloud, adversary).subscribe(new Action1<String>() {
+			@Override public void call(String nickname) {
+				RockPaperScissorsActivity.this.nickname = nickname;
+				chooseMove();
+			}});
 	}
 
  
@@ -148,7 +144,7 @@ public class RockPaperScissorsActivity extends Activity {
 		alert("Challenge " + nickname + " again?",
 			options("Yes", "No"),
 			new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int option) {
-				if (option == 0) startMatch();
+				if (option == 0) challengeAdversary();
 			}}
 		);
 	}
