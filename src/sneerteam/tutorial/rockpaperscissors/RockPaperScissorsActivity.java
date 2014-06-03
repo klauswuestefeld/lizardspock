@@ -24,8 +24,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private Cloud cloud;
 
-	private String adversary;
-	private String nickname;
+	private Contact adversary;
 
 	private long matchTime;
 	private Move move;
@@ -44,20 +43,20 @@ public class RockPaperScissorsActivity extends Activity {
 		
 		cloud = Cloud.onAndroidMainThread(this);
 		
-		cloud.path(ME, "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
-			String contactKey = (String)child.path().lastSegment();
-			listenToChallengesFrom(contactKey);
-		}});
+		cloud.contacts().subscribe(new Action1<Contact>() {@Override public void call(Contact contact) {
+		    listenToChallengesFrom(contact);
+        }});
+		
 	}
 
 
-	private void listenToChallengesFrom(final String contactKey) {
-		cloud.path(contactKey, GAMES, RPS, ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
+	private void listenToChallengesFrom(final Contact contact) {
+		cloud.path(contact.publicKey(), GAMES, RPS, ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
 			final long matchTime = (Long)child.path().lastSegment();
-			cloud.path(ME, GAMES, RPS, contactKey, matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+			cloud.path(ME, GAMES, RPS, contact.publicKey(), matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 			    if (exists) return;
 			    
-			    adversary = contactKey;
+			    adversary = contact;
 			    RockPaperScissorsActivity.this.matchTime = matchTime;
 			    startMatch();
 		    }});
@@ -74,7 +73,7 @@ public class RockPaperScissorsActivity extends Activity {
   		if (requestCode != PICK_CONTACT_REQUEST) return;
   		if (resultCode != RESULT_OK) return;
 
-		adversary = ContactPicker.publicKeyFrom(intent);
+		adversary = ContactPicker.contactFrom(intent);
 		challengeAdversary();
   	}
 
@@ -86,21 +85,17 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void startMatch() {
-		ContactUtils.nickname(cloud, adversary).subscribe(new Action1<String>() {
-			@Override public void call(String nickname) {
-				RockPaperScissorsActivity.this.nickname = nickname;
-				chooseMove();
-			}});
+	    chooseMove();
 	}
 
  
 	private void chooseMove() {
 		move = null;
-		alert("Choose your move against " + nickname,
+		alert("Choose your move against " + adversary.nickname(),
 			options("Rock", "Paper", "Scissors"),
 			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
 				move = Move.values()[option];
-				cloud.path(GAMES, RPS, adversary, matchTime).pub(move.name());
+				cloud.path(GAMES, RPS, adversary.publicKey(), matchTime).pub(move.name());
 				waitForAdversary();
 			}}
 		);
@@ -108,8 +103,8 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void waitForAdversary() {
-		final ProgressDialog waiting = progressDialog("Waiting for " + nickname + "...");		
-		cloud.path(adversary, GAMES, RPS, ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
+		final ProgressDialog waiting = progressDialog("Waiting for " + adversary.nickname() + "...");		
+		cloud.path(adversary.publicKey(), GAMES, RPS, ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
 			waiting.dismiss();
 			onReply(Move.valueOf((String)theirMove));
 		}});
@@ -118,7 +113,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private void onReply(Move theirMove) {
 		String outcome = outcome(theirMove);				
-		String message = "You used " + move + ". " + nickname + " used " + theirMove + ".";
+		String message = "You used " + move + ". " + adversary.nickname() + " used " + theirMove + ".";
 
 		alert(outcome + " " + message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
 			playAgain();
@@ -138,7 +133,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void playAgain() {
-		alert("Challenge " + nickname + " again?",
+		alert("Challenge " + adversary.nickname() + " again?",
 			options("Yes", "No"),
 			new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int option) {
 				if (option == 0) challengeAdversary();
