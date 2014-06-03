@@ -32,6 +32,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private String match;
 	private Move move;
+	
 	private AlertDialog currentAlert;
 	
 	
@@ -48,21 +49,26 @@ public class RockPaperScissorsActivity extends Activity {
 		
 		cloud.path(ME, "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
 			final String contactKey = (String)child.path().lastSegment();
-			cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
-				RockPaperScissorsActivity.this.match = match;
-				
-				cloud.path(ME, GAMES, RPS, MATCHES, match).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
-				    if (exists) return;
-                    adversary = contactKey;
-                    
-                    ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
-						RockPaperScissorsActivity.this.nickname = nickname;
-                    	alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {                    				boolean accepted = option == 0;
-                    		onChallengeReceived(contactKey, match, accepted);
-                    	}});
-                    }});
-                }});
-			}});
+			listenToChallengesFrom(contactKey);
+		}});
+	}
+
+
+	private void listenToChallengesFrom(final String contactKey) {
+		cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
+			RockPaperScissorsActivity.this.match = match;
+			
+			cloud.path(ME, GAMES, RPS, MATCHES, match).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+			    if (exists) return;
+		        adversary = contactKey;
+		        
+		        ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
+					RockPaperScissorsActivity.this.nickname = nickname;
+		        	alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {                    				boolean accepted = option == 0;
+		        		onChallengeReceived(contactKey, match, accepted);
+		        	}});
+		        }});
+		    }});
 		}});
 	}
 
@@ -178,4 +184,5 @@ public class RockPaperScissorsActivity extends Activity {
 	private CharSequence[] options(CharSequence... options) {
 		return options;
 	}
+
 }
