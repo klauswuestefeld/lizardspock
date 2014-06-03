@@ -56,10 +56,10 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private void listenToChallengesFrom(final String contactKey) {
 		cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
-			RockPaperScissorsActivity.this.match = match;
 			
 			cloud.path(ME, GAMES, RPS, MATCHES, match).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 			    if (exists) return;
+			    RockPaperScissorsActivity.this.match = match;
 		        adversary = contactKey;
 		        
 		        ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
