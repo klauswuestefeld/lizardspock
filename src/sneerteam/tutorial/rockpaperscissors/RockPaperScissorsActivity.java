@@ -52,8 +52,8 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void listenToChallengesFrom(final String contactKey) {
-		cloud.path(contactKey, GAMES, RPS, ME).value().cast(Long.class).subscribe(new Action1<Long>() { @Override public void call(final Long matchTime) {
-			
+		cloud.path(contactKey, GAMES, RPS, ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
+			final long matchTime = (Long)child.path().lastSegment();
 			cloud.path(ME, GAMES, RPS, contactKey, matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 			    if (exists) return;
 			    
@@ -81,7 +81,6 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private void challengeAdversary() {
 		matchTime = System.currentTimeMillis();
-		cloud.path(GAMES, RPS, adversary).pub(matchTime);
 		startMatch();
 	}
 
