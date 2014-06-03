@@ -70,16 +70,11 @@ public class RockPaperScissorsActivity extends Activity {
 		
 		ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
 			RockPaperScissorsActivity.this.nickname = nickname;
-			alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {                    				boolean accepted = option == 0;
-			onChallengeReceived(contactKey, accepted);
+			alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
+				if (option == 0)
+					chooseMove();
 			}});
 		}});
-	}
-
-
-	private void onChallengeReceived(final String contactKey, boolean accepted) {
-		if (!accepted) return;
-		chooseMove();
 	}
 
 
