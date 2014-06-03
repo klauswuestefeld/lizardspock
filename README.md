@@ -32,59 +32,22 @@ Cloud cloud = new Cloud();
 ```
 To challenge a friend for a match we open a contact picker that return a contact. Then we can subscribe to his/her tree and listen to his/her moves:
 ```JAVA
-...
-ContactPicker.startActivityForResult(this, 0);
-...
-
-@Override
-public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-    ...
-	adversary = ContactPicker.publicKeyFrom(intent);
-
-	ContactUtils.nickname(cloud, adversary).subscribe(new Action1<String>() {
-	    @Override public void call(String nickname) {
-			RockPaperScissorsActivity.this.nickname = nickname;
-			startMatch(); 
-        }});
-}
+code goes here
 ```
 
-To listen to challenges from friends we do this:
+To listen to challenges from our friends we do this:
 ```JAVA
-cloud.path(ME, "contacts").children().subscribe(new Action1<PathEvent>() { @Override public void call(PathEvent child) {
-	final String contactKey = (String)child.path().lastSegment();
-	cloud.path(contactKey, "games", "rock-paper-scissors", "challenges", ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String match) {
-		RockPaperScissorsActivity.this.match = match;
-		
-		cloud.path(ME, "games", "rock-paper-scissors", "matches", match).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
-		    if (exists) return;
-            adversary = contactKey;
-                    
-            ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
-				RockPaperScissorsActivity.this.nickname = nickname;
-                alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) { boolean accepted = option == 0;
-                    onChallengeReceived(contactKey, match, accepted);
-                }});
-            }});
-        }});
-	}});
-}});
+code goes here
 ```
 
-To pub our move on tree:
+To send our move and pub it on our tree:
 ```JAVA
-move = Move.values()[option];
-cloud.path(GAMES, "rock-paper-scissors", "matches", match).pub(move.name());
-waitForAdversary();
-}
+code goes here
 ```
 
-To listen to adversary path tree and wait for his/her move:
+To listen to adversary moves:
 ```JAVA
-cloud.path(adversary, GAMES, RPS, MATCHES, match).value().subscribe(new Action1<Object>() {@Override public void call(Object theirMove) {
-	waiting.dismiss();
-	onReply(Move.valueOf((String)theirMove));
-}});
+code goes here
 ```
 
 That's it. When both players choose their move, we call the method onReply() to compare it and show the result.
