@@ -18,8 +18,6 @@ public class RockPaperScissorsActivity extends Activity {
 	
 	private static final String GAMES = "games";
 	private static final String RPS = "rock-paper-scissors";
-	private static final String MATCHES = "matches";
-	private static final String CHALLENGES = "challenges";
 
 	private static final int PICK_CONTACT_REQUEST = 100;
 
@@ -54,9 +52,9 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void listenToChallengesFrom(final String contactKey) {
-		cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(Long.class).subscribe(new Action1<Long>() { @Override public void call(final Long matchTime) {
+		cloud.path(contactKey, GAMES, RPS, ME).value().cast(Long.class).subscribe(new Action1<Long>() { @Override public void call(final Long matchTime) {
 			
-			cloud.path(ME, GAMES, RPS, MATCHES, matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+			cloud.path(ME, GAMES, RPS, contactKey, matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 			    if (exists) return;
 			    
 			    adversary = contactKey;
@@ -83,7 +81,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private void challengeAdversary() {
 		matchTime = System.currentTimeMillis();
-		cloud.path(GAMES, RPS, CHALLENGES, adversary).pub(matchTime);
+		cloud.path(GAMES, RPS, adversary).pub(matchTime);
 		startMatch();
 	}
 
@@ -103,7 +101,7 @@ public class RockPaperScissorsActivity extends Activity {
 			options("Rock", "Paper", "Scissors"),
 			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
 				move = Move.values()[option];
-				cloud.path(GAMES, RPS, MATCHES, matchTime).pub(move.name());
+				cloud.path(GAMES, RPS, adversary, matchTime).pub(move.name());
 				waitForAdversary();
 			}}
 		);
@@ -112,7 +110,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private void waitForAdversary() {
 		final ProgressDialog waiting = progressDialog("Waiting for " + nickname + "...");		
-		cloud.path(adversary, GAMES, RPS, MATCHES, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
+		cloud.path(adversary, GAMES, RPS, ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
 			waiting.dismiss();
 			onReply(Move.valueOf((String)theirMove));
 		}});
