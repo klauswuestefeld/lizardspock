@@ -2,7 +2,6 @@ package sneerteam.tutorial.rockpaperscissors;
 
 import static sneerteam.snapi.CloudPath.*;
 
-import java.util.*;
 import java.util.concurrent.*;
 
 import rx.functions.*;
@@ -30,7 +29,7 @@ public class RockPaperScissorsActivity extends Activity {
 	private String adversary;
 	private String nickname;
 
-	private String matchTime;
+	private long matchTime;
 	private Move move;
 	
 	private AlertDialog currentAlert;
@@ -55,7 +54,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void listenToChallengesFrom(final String contactKey) {
-		cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(String.class).subscribe(new Action1<String>() { @Override public void call(final String matchTime) {
+		cloud.path(contactKey, GAMES, RPS, CHALLENGES, ME).value().cast(Long.class).subscribe(new Action1<Long>() { @Override public void call(final Long matchTime) {
 			
 			cloud.path(ME, GAMES, RPS, MATCHES, matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 			    if (exists) return;
@@ -65,7 +64,7 @@ public class RockPaperScissorsActivity extends Activity {
 		        ContactUtils.nickname(cloud, contactKey).subscribe(new Action1<String>() {@Override public void call(String nickname) {
 					RockPaperScissorsActivity.this.nickname = nickname;
 		        	alert("Challenge from " + nickname, options("OK", "Cancel"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {                    				boolean accepted = option == 0;
-		        		onChallengeReceived(contactKey, matchTime, accepted);
+		        		onChallengeReceived(contactKey, accepted);
 		        	}});
 		        }});
 		    }});
@@ -73,7 +72,7 @@ public class RockPaperScissorsActivity extends Activity {
 	}
 
 
-	private void onChallengeReceived(final String contactKey, String matchTime, boolean accepted) {
+	private void onChallengeReceived(final String contactKey, boolean accepted) {
 		if (!accepted) return;
 		chooseMove();
 	}
@@ -99,7 +98,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void startMatch() {
-		matchTime = UUID.randomUUID().toString();
+		matchTime = System.currentTimeMillis();
 		cloud.path(GAMES, RPS, CHALLENGES, adversary).pub(matchTime);
 		chooseMove();
 	}
