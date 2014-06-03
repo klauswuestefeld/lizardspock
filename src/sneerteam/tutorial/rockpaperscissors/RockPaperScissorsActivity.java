@@ -24,12 +24,16 @@ public class RockPaperScissorsActivity extends Activity {
 
 	private static final int PICK_CONTACT_REQUEST = 100;
 
+
 	private Cloud cloud;
+
 	private String adversary;
 	private String nickname;
+
 	private String match;
 	private Move move;
 	private AlertDialog currentAlert;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +76,6 @@ public class RockPaperScissorsActivity extends Activity {
 	private void challenge() {
 		ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
   	}
-
-
   	@Override
   	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
   		super.onActivityResult(requestCode, resultCode, intent);
