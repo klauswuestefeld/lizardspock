@@ -85,12 +85,7 @@ public class RockPaperScissorsActivity extends Activity {
 
 
 	private void startMatch() {
-	    chooseMove();
-	}
-
- 
-	private void chooseMove() {
-		move = null;
+	    move = null;
 		alert("Choose your move against " + adversary.nickname(),
 			options("Rock", "Paper", "Scissors"),
 			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
@@ -101,7 +96,7 @@ public class RockPaperScissorsActivity extends Activity {
 		);
 	}
 
-
+ 
 	private void waitForAdversary() {
 		final ProgressDialog waiting = progressDialog("Waiting for " + adversary.nickname() + "...");		
 		cloud.path(adversary.publicKey(), GAMES, RPS, ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
