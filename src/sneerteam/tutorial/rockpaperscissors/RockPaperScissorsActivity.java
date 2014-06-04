@@ -19,9 +19,6 @@ public class RockPaperScissorsActivity extends Activity {
 	private static final String GAMES = "games";
 	private static final String RPS = "rock-paper-scissors";
 
-	private static final int PICK_CONTACT_REQUEST = 100;
-
-
 	private Cloud cloud;
 
 	private Contact adversary;
@@ -65,18 +62,11 @@ public class RockPaperScissorsActivity extends Activity {
 	
 	
 	private void challengeSomeFriend() {
-		ContactPicker.startActivityForResult(this, PICK_CONTACT_REQUEST);
+		ContactPicker.pickContact(this).subscribe(new Action1<Contact>() {@Override public void call(Contact contact) {
+            adversary = contact;
+            challengeAdversary();
+        }});
   	}
-  	@Override
-  	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-  		super.onActivityResult(requestCode, resultCode, intent);
-  		if (requestCode != PICK_CONTACT_REQUEST) return;
-  		if (resultCode != RESULT_OK) return;
-
-		adversary = ContactPicker.contactFrom(intent);
-		challengeAdversary();
-  	}
-
 
 	private void challengeAdversary() {
 		matchTime = System.currentTimeMillis();
