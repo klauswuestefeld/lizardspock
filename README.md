@@ -1,53 +1,66 @@
 Sneer API - 5 Minute Tutorial
 ====
 
-This project is a simple game of Rock/Paper/Scissors ready to play online.
+This is a game of Rock-Paper-Scissors ready to play with your friends on Sneer.
 
-![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png) . ![alt tag](http://i.imgur.com/x7FQgFu.png)
+It is standard Android project with a [single class](https://github.com/felipebueno/rockpaperscissors/blob/master/src/sneerteam/tutorial/rockpaperscissors/RockPaperScissorsActivity.java) implementing the game.
 
-In this tutorial, you will learn how how to use the Sneer cloud. It's pretty simple but I assume you are familiar with [Reactive Programming](http://en.wikipedia.org/wiki/Reactive_programming). Here is a nice introduction on the subject: [Observable](https://github.com/Netflix/RxJava/wiki/Observable). You should definitely give it a try.
+![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png)
+
+This tutorial highlights the parts of the code that use the Sneer API. We assume you are an experienced [Sneer](http://sneer.me) user and Android developer.
+
 
 Getting Started
----------------
-As it's a multiplayer game you'll need two emulators (or devices) to test the app.
+----
 
-Ok, clone this project using git, import it into your Android Development Toolkit workspace and follow the steps below.
+  - Clone this project using git.
 
-  - Create a libs folder in the root folder of your project
-  
-  - Download the latest snapi-no-deps.jar from [here](#) and add it to the libs folder
+  - Create a libs folder in the root folder of the project and download the latest sneer-api-nodeps.jar from [here](#) into it.
 
-  - Run the project on both emulators and play with it for a little :)
-   
-  
-Now open the file RockPaperScissorsActivity.java and take a few minutes to understand the code until you feel confortable with it.
+  - Import the project into your [Eclipse Android SDK](http://developer.android.com/sdk/index.html) workspace.
+
+  - Run the project on two devices or emulators and play. :)
+
 
 Usage
------
+----
 
-To access the cloud:
+Open the RockPaperScissorsActivity class and take a look at the code.
 
+Accessing the Sneer cloud:
 ```JAVA
 Cloud cloud = new Cloud();
 ```
-To challenge a friend for a match we open a contact picker that return a contact. Then we can subscribe to his/her tree and listen to his/her moves:
+
+Choosing an adversary for a match:
 ```JAVA
 code goes here
 ```
 
-To listen to challenges from our friends we do this:
+Subscribing to challenges from our friends:
+```JAVA
+code goes here [Eclipse Android SDK](http://developer.android.com/sdk/index.html)
+```
+
+Sending our move:
 ```JAVA
 code goes here
 ```
 
-To send our move and pub it on our tree:
+Listening to moves from our adversary:
 ```JAVA
 code goes here
 ```
 
-To listen to adversary moves:
-```JAVA
-code goes here
-```
+That's it. If you want to beat your friends at Rock-Paper-Scissors, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play).
 
-That's it. When both players choose their move, we call the method onReply() to compare it and show the result.
+![alt tag](http://i.imgur.com/x7FQgFu.png)
+
+RxJava
+----
+
+The simple code above actually uses RxJava, a reactive programming lib included in the [Sneer API jar](#). RxJava provides [Observables](https://github.com/Netflix/RxJava/wiki/Observable), that make it easier to write apps that handle many concurrent and assynchronous events.
+
+You can use it for simple callbacks, as above, or combine the events in many useful ways.
+
+It has [great documentation](https://github.com/Netflix/RxJava/wiki/Observable) with many [cool diagrams](https://github.com/Netflix/RxJava/wiki/Combining-Observables#merge).
