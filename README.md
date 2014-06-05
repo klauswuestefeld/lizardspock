@@ -3,7 +3,7 @@ Sneer API - 5 Minute Tutorial
 
 This is a game of Rock-Paper-Scissors ready to play with your friends on Sneer.
 
-It is standard Android project with a [single class](https://github.com/felipebueno/rockpaperscissors/blob/master/src/sneerteam/tutorial/rockpaperscissors/RockPaperScissorsActivity.java) implementing the game.
+It is standard Android project with a [single class](https://github.com/felipebueno/rockpaperscissors/blob/master/src/sneerteam/tutorial/rockpaperscissors/RockPaperScissorsActivity.java) implementing the game activity.
 
 ![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png)
 
@@ -39,7 +39,7 @@ code goes here
 
 Subscribing to challenges from our friends:
 ```JAVA
-code goes here [Eclipse Android SDK](http://developer.android.com/sdk/index.html)
+code goes here
 ```
 
 Sending our move:
@@ -52,15 +52,15 @@ Listening to moves from our adversary:
 code goes here
 ```
 
-That's it. If you want to beat your friends at Rock-Paper-Scissors, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play).
+That's it. If you want to learn how to beat your friends at Rock-Paper-Scissors, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play).
 
 ![alt tag](http://i.imgur.com/x7FQgFu.png)
 
 RxJava
 ----
 
-The simple code above actually uses RxJava, a reactive programming lib included in the [Sneer API jar](#). RxJava provides [Observables](https://github.com/Netflix/RxJava/wiki/Observable), that make it easier to write apps that handle many concurrent and assynchronous events.
+The simple code above actually uses RxJava, a reactive programming lib included in the [Sneer API jar](#). RxJava provides [Observables](https://github.com/Netflix/RxJava/wiki/Observable), that make it easier to write code that handles concurrent, assynchronous events.
 
 You can use it for simple callbacks, as above, or combine the events in many useful ways.
 
-It has [great documentation](https://github.com/Netflix/RxJava/wiki/Observable) with many [cool diagrams](https://github.com/Netflix/RxJava/wiki/Combining-Observables#merge).
+RxJava has [great documentation](https://github.com/Netflix/RxJava/wiki/Observable) with many [cool diagrams](https://github.com/Netflix/RxJava/wiki/Combining-Observables#merge).
