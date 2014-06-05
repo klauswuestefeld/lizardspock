@@ -3,7 +3,7 @@ Sneer API - 5 Minute Tutorial
 
 This is a game of Rock-Paper-Scissors ready to play with your friends on Sneer.
 
-It is standard Android project with a [single class](https://github.com/felipebueno/rockpaperscissors/blob/master/src/sneerteam/tutorial/rockpaperscissors/RockPaperScissorsActivity.java) implementing the game activity.
+It is a plain Android project with a [single class](https://github.com/felipebueno/rockpaperscissors/blob/master/src/sneerteam/tutorial/rockpaperscissors/RockPaperScissorsActivity.java) implementing the game activity.
 
 ![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png)
 
