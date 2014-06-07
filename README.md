@@ -5,7 +5,8 @@ This is a game of Rock-Paper-Scissors ready to play with your friends on Sneer.
 
 It is a plain Android project with a [single class](https://github.com/felipebueno/rockpaperscissors/blob/master/src/sneerteam/tutorial/rockpaperscissors/RockPaperScissorsActivity.java) implementing the game activity.
 
-![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png)
+![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png) . ![alt tag](http://i.imgur.com/x7FQgFu.png)
+
 
 This tutorial highlights the parts of the code that use the Sneer API. We assume you know how to use [Sneer](http://sneer.me) and the basics of Android development.
 
@@ -54,8 +55,6 @@ Listening to moves from our adversary:
 ```JAVA
 code goes here
 ```
-
-![alt tag](http://i.imgur.com/x7FQgFu.png)
 
 That's it. If you want to learn how to beat your friends at Rock-Paper-Scissors, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play).
 
