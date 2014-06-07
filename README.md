@@ -15,7 +15,7 @@ Getting Started
 
   - Clone this project using git.
 
-  - Create a libs folder in the root folder of the project and download the [latest sneer-api-nodeps.jar](#) into it.
+  - Download the [latest sneer-api-nodeps.jar](#) into the libs folder or get it with Maven: ```mvn build``` (Felipe, please check what the right command is).
 
   - Import the project into your [Eclipse Android SDK](http://developer.android.com/sdk/index.html) workspace.
 

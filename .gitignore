@@ -1,4 +1,4 @@
-libs
+libs/*.jar
 
 # Built application files
 *.apk
