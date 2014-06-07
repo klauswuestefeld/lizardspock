@@ -15,7 +15,7 @@ Getting Started
 
   - Clone this project using git.
 
-  - Get the Sneer API jar: (Felipe, please check what the right commands are).
+  - Get the Sneer API jar using one of these: (Felipe, please check what the right commands are).
     - Maven: ```mvn build```
     - Gradle: ```./gradlew```
     - Manual: Download the [latest sneer-api-nodeps.jar](#) into the libs folder. 
