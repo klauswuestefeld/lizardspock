@@ -11,7 +11,7 @@ It is a plain Android project with a [single class](https://github.com/felipebue
 This tutorial highlights the parts of the code that use the Sneer API. We assume you know how to use [Sneer](http://sneer.me) and the basics of Android development.
 
 
-Getting Started
+Running
 ----
 
   - Clone this project using git.
@@ -23,7 +23,7 @@ Getting Started
 
   - Import the project into [Eclipse Android SDK](http://developer.android.com/sdk/index.html).
 
-  - Run the project on a devices with Sneer installed and play. :)
+  - Run the project on two devices with Sneer installed. :)
 
 
 Usage
