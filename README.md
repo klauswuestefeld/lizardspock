@@ -22,7 +22,7 @@ Running
 
   - Import the project into [Eclipse Android SDK](http://developer.android.com/sdk/index.html).
 
-  - Run the project on two devices with Sneer installed. :)
+  - Run on devices with Sneer installed and play. :)
 
 
 Usage
