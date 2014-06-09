@@ -42,8 +42,7 @@ public class RockPaperScissorsActivity extends Activity {
 		
 		cloud.contacts().subscribe(new Action1<Contact>() {@Override public void call(Contact contact) {
 		    listenToChallengesFrom(contact);
-        }});
-		
+        }});		
 	}
 
 
@@ -68,6 +67,7 @@ public class RockPaperScissorsActivity extends Activity {
         }});
   	}
 
+	
 	private void challengeAdversary() {
 		matchTime = System.currentTimeMillis();
 		startMatch();
