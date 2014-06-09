@@ -68,6 +68,8 @@ Publishing our move:
 cloud.path("games", "rock-paper-scissors", adversary.publicKey(), matchTime).pub("ROCK");
 ```
 
+Path segments and values can be: strings, long numbers, booleans, lists, sets or maps. 
+
 Listening to moves from our adversary:
 ```JAVA
 cloud.path(adversary.publicKey(), "games", "rock-paper-scissors", ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
