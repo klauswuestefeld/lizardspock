@@ -25,15 +25,13 @@ Running
   - Run on devices with Sneer installed and play. :)
 
 
-Usage
+Using the API
 ----
 
 Open the RockPaperScissorsActivity class and take a look at the code. We assume you know how to use [Sneer](http://sneer.me) and the basics of Android development.
 
 Accessing the Sneer cloud:
 ```JAVA
-private Cloud cloud;
-...
 cloud = Cloud.onAndroidMainThread(this);
 ```
 
@@ -41,43 +39,34 @@ Choosing an adversary for a match:
 ```JAVA
 ContactPicker.pickContact(this).subscribe(new Action1<Contact>() {@Override public void call(Contact contact) {
 	adversary = contact;
-    ...
 }});
-...
 ```
 
 Subscribing to challenges from our friends:
 ```JAVA
 cloud.path(contact.publicKey(), GAMES, RPS, ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
 	final long matchTime = (Long)child.path().lastSegment();
-	cloud.path(ME, GAMES, RPS, contact.publicKey(), matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
-	    if (exists) return;
-	    
-	    adversary = contact;
-	    RockPaperScissorsActivity.this.matchTime = matchTime;
-	    startMatch();
-    }});
+	...
+}});
+```
+
+Is this an old match we already played?
+```JAVA
+cloud.path(ME, GAMES, RPS, contact.publicKey(), matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+	if (exists) return;
+	...
 }});
 ```
 
 Sending our move:
 ```JAVA
-move = null;
-alert("Choose your move against " + adversary.nickname(),
-	options("Rock", "Paper", "Scissors"),
-	new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
-		move = Move.values()[option];
-		cloud.path(GAMES, RPS, adversary.publicKey(), matchTime).pub(move.name());
-		waitForAdversary();
-	}}
-);
+cloud.path(GAMES, RPS, adversary.publicKey(), matchTime).pub("ROCK");
 ```
 
 Listening to moves from our adversary:
 ```JAVA
 cloud.path(adversary.publicKey(), GAMES, RPS, ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
-	waiting.dismiss();
-	onReply(Move.valueOf((String)theirMove));
+	...(String)theirMove...
 }});
 ```
 
