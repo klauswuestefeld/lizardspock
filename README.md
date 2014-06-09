@@ -15,9 +15,10 @@ Running
 
   - Clone this project using git.
 
-  - Get the Sneer API jar using one of these: (Felipe, please check what the right commands are).
+  - Get the Sneer API jar by running one of these options: (Felipe, please check what the right commands are).
     - Maven: ```mvn build```
-    - Gradle: ```./gradlew```
+    - Gradle on Linux: ```./gradlew```
+    - Gradle on Windows: ```gradlew.bat```
     - Manual: Download the [latest sneer-api-nodeps.jar](https://github.com/sneerteam/snapi/releases) into the libs folder. 
 
   - Import the project into [Eclipse Android SDK](http://developer.android.com/sdk/index.html).
@@ -30,21 +31,23 @@ Using the API
 
 Open the RockPaperScissorsActivity class and take a look at the code. We assume you know how to use [Sneer](http://sneer.me) and the basics of Android development.
 
-Accessing the Sneer cloud:
-```JAVA
-cloud = Cloud.onAndroidMainThread(this);
-```
-
-Choosing an adversary for a match:
+Opening the Sneer contacts activity to pick an adversary for a match:
 ```JAVA
 ContactPicker.pickContact(this).subscribe(new Action1<Contact>() {@Override public void call(Contact contact) {
 	adversary = contact;
 }});
 ```
 
-Subscribing to challenges from our friends:
+Accessing the Sneer cloud:
 ```JAVA
-cloud.path(contact.publicKey(), GAMES, RPS, ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
+cloud = Cloud.onAndroidMainThread(this);
+```
+
+All communication happens with values being published and subscribed on tree structures. The first segment on the path is the root of the tree. It is the public key of the owner of that tree.
+
+Subscribing to challenges from a contact:
+```JAVA
+cloud.path(contact.publicKey(), "games", "rock-paper-scissors", ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
 	long matchTime = (Long)child.path().lastSegment();
 	...
 }});
@@ -52,20 +55,22 @@ cloud.path(contact.publicKey(), GAMES, RPS, ME).children().subscribe(new Action1
 
 Is this an old match we already played?
 ```JAVA
-cloud.path(ME, GAMES, RPS, contact.publicKey(), matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+cloud.path(ME, "games", "rock-paper-scissors", contact.publicKey(), matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 	if (exists) return;
 	...
 }});
 ```
 
-Sending our move:
+Publishing happens on the user's own tree, so the first segment (public key) is omitted.
+
+Publishing our move:
 ```JAVA
-cloud.path(GAMES, RPS, adversary.publicKey(), matchTime).pub("ROCK");
+cloud.path("games", "rock-paper-scissors", adversary.publicKey(), matchTime).pub("ROCK");
 ```
 
 Listening to moves from our adversary:
 ```JAVA
-cloud.path(adversary.publicKey(), GAMES, RPS, ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
+cloud.path(adversary.publicKey(), "games", "rock-paper-scissors", ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
 	...(String)theirMove...
 }});
 ```
