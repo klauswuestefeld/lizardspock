@@ -18,7 +18,7 @@ Running
   - Get the Sneer API jar using one of these: (Felipe, please check what the right commands are).
     - Maven: ```mvn build```
     - Gradle: ```./gradlew```
-    - Manual: Download the [latest sneer-api-nodeps.jar](#) into the libs folder. 
+    - Manual: Download the [latest sneer-api-nodeps.jar](https://github.com/sneerteam/snapi/releases) into the libs folder. 
 
   - Import the project into [Eclipse Android SDK](http://developer.android.com/sdk/index.html).
 
