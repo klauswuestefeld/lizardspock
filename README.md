@@ -32,27 +32,53 @@ Open the RockPaperScissorsActivity class and take a look at the code. We assume 
 
 Accessing the Sneer cloud:
 ```JAVA
-Cloud cloud = new Cloud();
+private Cloud cloud;
+...
+cloud = Cloud.onAndroidMainThread(this);
 ```
 
 Choosing an adversary for a match:
 ```JAVA
-code goes here
+ContactPicker.pickContact(this).subscribe(new Action1<Contact>() {@Override public void call(Contact contact) {
+	adversary = contact;
+    ...
+}});
+...
 ```
 
 Subscribing to challenges from our friends:
 ```JAVA
-code goes here
+cloud.path(contact.publicKey(), GAMES, RPS, ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
+	final long matchTime = (Long)child.path().lastSegment();
+	cloud.path(ME, GAMES, RPS, contact.publicKey(), matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+	    if (exists) return;
+	    
+	    adversary = contact;
+	    RockPaperScissorsActivity.this.matchTime = matchTime;
+	    startMatch();
+    }});
+}});
 ```
 
 Sending our move:
 ```JAVA
-code goes here
+move = null;
+alert("Choose your move against " + adversary.nickname(),
+	options("Rock", "Paper", "Scissors"),
+	new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
+		move = Move.values()[option];
+		cloud.path(GAMES, RPS, adversary.publicKey(), matchTime).pub(move.name());
+		waitForAdversary();
+	}}
+);
 ```
 
 Listening to moves from our adversary:
 ```JAVA
-code goes here
+cloud.path(adversary.publicKey(), GAMES, RPS, ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
+	waiting.dismiss();
+	onReply(Move.valueOf((String)theirMove));
+}});
 ```
 
 That's it. If you want to learn how to beat your friends at Rock-Paper-Scissors, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play).
