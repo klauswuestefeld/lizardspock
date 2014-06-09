@@ -45,7 +45,7 @@ ContactPicker.pickContact(this).subscribe(new Action1<Contact>() {@Override publ
 Subscribing to challenges from our friends:
 ```JAVA
 cloud.path(contact.publicKey(), GAMES, RPS, ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
-	final long matchTime = (Long)child.path().lastSegment();
+	long matchTime = (Long)child.path().lastSegment();
 	...
 }});
 ```
