@@ -28,7 +28,7 @@ Running
 Using the API
 ----
 
-Open the RockPaperScissorsActivity class and take a look at the code. We assume you know how to use [Sneer](http://sneer.me) and the basics of Android development.
+Open the RockPaperScissorsActivity class and take a look at the code. We assume you are a [Sneer](https://play.google.com/store/search?q=SneerApp) user and know the basics of Android development.
 
 Opening the Sneer contacts activity to pick an adversary for a match:
 ```JAVA
