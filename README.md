@@ -19,7 +19,7 @@ Running
     - Maven: ```mvn build```
     - Gradle on Linux: ```./gradlew```
     - Gradle on Windows: ```gradlew.bat```
-    - Manual: Download the [latest sneer-api-nodeps.jar](https://github.com/sneerteam/snapi/releases) into the libs folder. 
+    - Maven: Download the latest sneer-api-nodeps.jar from the [Sneer Maven Central repository](https://github.com/sneerteam/snapi/releases) into this project's libs folder. 
 
   - Import the project into [Eclipse Android SDK](http://developer.android.com/sdk/index.html).
 
