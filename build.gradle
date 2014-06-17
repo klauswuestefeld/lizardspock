@@ -1,29 +1,19 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
-    }
-}
-
 configurations {
   libs
   compile.extendsFrom libs
 }
 
 repositories {
+    mavenCentral()
     maven {
-        name = "sonatype"
         url = "https://oss.sonatype.org/content/repositories/snapshots/"
     }
 }
 
 dependencies {
-    libs 'me.sneer:sneer-api-nodeps:0.1.0-SNAPSHOT'
+    libs 'me.sneer:sneer-api:0.1.0-SNAPSHOT'
+    libs 'us.bpsm:edn-java:0.4.4'
+    libs 'com.netflix.rxjava:rxjava-android:0.17.5'
 }
 
 task copyLibs(type: Copy) {
