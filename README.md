@@ -16,7 +16,7 @@ Running
   - Clone this project using git.
 
   - Get the Sneer API jar by running one of these options:
-    - Maven: Download the latest sneer-api-nodeps.jar from the [Sneer Maven Central repository](https://github.com/sneerteam/snapi/releases) into this project's libs folder. 
+    - Maven: Download the latest sneer-api-nodeps.jar from the [Sneer Maven Central repository](http://search.maven.org/#browse%7C-358320422) into this project's libs folder. 
     - Gradle on Linux: ```./gradlew```
     - Gradle on Windows: ```gradlew.bat```
 
@@ -81,7 +81,7 @@ That's it. If you want to learn how to beat your friends at Rock-Paper-Scissors,
 RxJava
 ----
 
-The code above uses RxJava, a reactive programming lib included in the [Sneer API jar](#). RxJava provides [Observables](https://github.com/Netflix/RxJava/wiki/Observable), that make it easier to write code to handle concurrent, assynchronous events.
+The code above uses RxJava, a reactive programming lib included in the [Sneer API jar](http://search.maven.org/#browse%7C-358320422). RxJava provides [Observables](https://github.com/Netflix/RxJava/wiki/Observable), that make it easier to write code to handle concurrent, assynchronous events.
 
 You can use it for simple callbacks, as above, or combine the events in many powerful ways.
 
