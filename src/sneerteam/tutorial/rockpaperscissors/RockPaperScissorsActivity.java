@@ -101,7 +101,6 @@ public class RockPaperScissorsActivity extends Activity {
 		String message = "You used " + move + ". " + adversary.nickname() + " used " + theirMove + ".";
 
 		alert(outcome + " " + message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
-			playAgain();
 		}});
 	}
 
@@ -114,16 +113,6 @@ public class RockPaperScissorsActivity extends Activity {
 		if (move == Move.PAPER    && theirMove == Move.ROCK    ) return "You win!";
 
 		return "You lose!";
-	}
-
-
-	private void playAgain() {
-		alert("Challenge " + adversary.nickname() + " again?",
-			options("Yes", "No"),
-			new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int option) {
-				if (option == 0) challengeAdversary();
-			}}
-		);
 	}
 
 
