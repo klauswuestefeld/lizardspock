@@ -12,8 +12,6 @@ repositories {
 
 dependencies {
     libs 'me.sneer:sneer-api:0.1.0-SNAPSHOT'
-    libs 'us.bpsm:edn-java:0.4.4'
-    libs 'com.netflix.rxjava:rxjava-android:0.17.5'
 }
 
 task copyLibs(type: Copy) {
