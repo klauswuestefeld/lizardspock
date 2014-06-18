@@ -143,4 +143,10 @@ public class RockPaperScissorsActivity extends Activity {
 		return options;
 	}
 
+	
+	@Override
+	protected void onDestroy() {
+		if (cloud != null) cloud.dispose();
+		super.onDestroy();
+	}
 }
