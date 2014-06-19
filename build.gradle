@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    libs 'me.sneer:sneer-api:0.1.0-SNAPSHOT'
+    libs 'me.sneer:sneer-api:0.1.1-SNAPSHOT'
 }
 
 task copyLibs(type: Copy) {
