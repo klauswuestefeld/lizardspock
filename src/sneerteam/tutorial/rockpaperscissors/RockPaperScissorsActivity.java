@@ -44,7 +44,7 @@ public class RockPaperScissorsActivity extends Activity {
 		    listenToChallengesFrom(contact);
         }});		
 	}
-
+	
 
 	private void listenToChallengesFrom(final Contact contact) {
 		cloud.path(contact.publicKey(), GAMES, RPS, ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
@@ -142,7 +142,22 @@ public class RockPaperScissorsActivity extends Activity {
 	private CharSequence[] options(CharSequence... options) {
 		return options;
 	}
+	
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		cloud.unregisterForNotification(GAMES, RPS, ME);
+	}
+	
+	 
+	@Override
+	protected void onPause() {
+		Intent intent = new Intent(this, RockPaperScissorsActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		cloud.registerForNotification(intent, GAMES, RPS, ME);
+		super.onPause();
+	}
 	
 	@Override
 	protected void onDestroy() {
