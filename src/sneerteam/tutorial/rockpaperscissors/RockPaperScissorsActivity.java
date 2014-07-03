@@ -1,11 +1,11 @@
 package sneerteam.tutorial.rockpaperscissors;
 
-import static sneerteam.snapi.CloudPath.*;
+import static sneer.snapi.CloudPath.*;
 
 import java.util.concurrent.*;
 
 import rx.functions.*;
-import sneerteam.snapi.*;
+import sneer.snapi.*;
 import android.app.*;
 import android.content.*;
 import android.os.*;
