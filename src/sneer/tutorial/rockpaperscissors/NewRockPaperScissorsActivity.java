@@ -1,4 +1,4 @@
-package sneerteam.tutorial.rockpaperscissors;
+package sneer.tutorial.rockpaperscissors;
 
 import rx.functions.*;
 import sneer.snapi.*;
