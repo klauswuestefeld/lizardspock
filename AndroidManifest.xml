@@ -11,7 +11,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Rock-Paper-Scissors"
         android:theme="@style/AppTheme" >
         <activity android:name=".RPSLauncherActivity" >
             <intent-filter>
