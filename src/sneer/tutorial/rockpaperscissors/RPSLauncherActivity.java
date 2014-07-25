@@ -9,10 +9,12 @@ public class RPSLauncherActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SneerAndroid.startInteractionList(this, 
-				"RPS Challenges", 
-				"rock-paper-scissor/move", 
-				"sneer.tutorial.rockpaperscissors.CHALLENGE");
+		
+		String title = "RPS Challenges";
+		String type = "rock-paper-scissor/move";
+		String newInteractionAction = "sneer.tutorial.rockpaperscissors.CHALLENGE";
+		
+		SneerAndroid.startInteractionList(this, title, type, newInteractionAction);
 	}
 
 }
