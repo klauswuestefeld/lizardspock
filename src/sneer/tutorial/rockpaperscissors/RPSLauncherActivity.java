@@ -10,7 +10,7 @@ public class RPSLauncherActivity extends Activity {
 		super.onResume();
 		
 		String title = "RPS Challenges";
-		String type = "rock-paper-scissor/move";
+		String type = "rock-paper-scissors/move";
 		String newInteractionLabel = "Challenge!!";
 		String newInteractionAction = "sneer.tutorial.rockpaperscissors.CHALLENGE";
 		
