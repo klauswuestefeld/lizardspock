@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sneer.tutorial.rockpaperscissors"
-    android:versionCode="1"
+    android:versionCode="2"
     android:versionName="1.0" >
 
     <uses-sdk
@@ -24,12 +24,12 @@
             android:name=".ChallengeActivity"
             android:label="Challenge!!" >
             <intent-filter>
-                <data android:mimeType="rock-paper-scissors/move" />
-
-                <action android:name="sneer.tutorial.rockpaperscissors.CHALLENGE" />
+                <!-- 
+                 <data android:mimeType="rock-paper-scissors/move" />
                 <action android:name="android.intent.action.VIEW" />
-
+				-->
                 <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="sneer.tutorial.rockpaperscissors.CHALLENGE" />
             </intent-filter>
         </activity>
     </application>
