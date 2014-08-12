@@ -20,7 +20,7 @@ public class ChallengeActivity extends Activity {
 
 		session = SneerAndroid.sessionOnAndroidMainThread(this);
 		
-		alert("Choose your move against " + session.contactNickname().mostRecent(),
+		alert("Choose your move against " + session.contactNickname().current(),
 				options("Rock", "Paper", "Scissors"),
 				new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
 					myMove = Move.values()[option];
@@ -31,7 +31,7 @@ public class ChallengeActivity extends Activity {
 	}
  
 	private void waitForAdversary() {
-		final ProgressDialog waiting = progressDialog("Waiting for " + session.contactNickname().mostRecent() + "...");
+		final ProgressDialog waiting = progressDialog("Waiting for " + session.contactNickname().current() + "...");
 		session.received().subscribe(new Action1<String>() { @Override public void call(String theirMove) {
 			waiting.dismiss();
 			onReply(Move.valueOf(theirMove));
@@ -41,7 +41,7 @@ public class ChallengeActivity extends Activity {
 
 	private void onReply(Move theirMove) {
 		String outcome = outcome(theirMove);				
-		String message = "You used " + myMove + ". " + session.contactNickname().mostRecent() + " used " + theirMove + ".";
+		String message = "You used " + myMove + ". " + session.contactNickname().current() + " used " + theirMove + ".";
 
 		alert(outcome + " " + message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
 			finish();
