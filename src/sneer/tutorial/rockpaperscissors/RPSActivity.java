@@ -23,13 +23,13 @@ public class RPSActivity extends SessionActivity {
 		super.onCreate(savedInstanceState);
 
 		alert("Choose your move against " + adversary(),
-				options("Rock", "Paper", "Scissors"),
-				new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
-					myMove = Move.values()[option];
-					sendMessage(myMove.name());
-					waitForAdversary();
-				}}
-			);
+			options("Rock", "Paper", "Scissors"),
+			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
+				myMove = Move.values()[option];
+				sendMessage(myMove.name());
+				waitForAdversary();
+			}}
+		);
 	}
  
 
