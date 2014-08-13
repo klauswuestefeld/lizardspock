@@ -1,47 +1,50 @@
 package sneer.tutorial.rockpaperscissors;
 
 import rx.functions.*;
-import sneer.*;
+import sneer.android.ui.*;
 import android.app.*;
 import android.content.*;
 import android.os.*;
 
-public class ChallengeActivity extends Activity {
+public class RPSActivity extends SessionActivity {
 
 	enum Move { ROCK, PAPER, SCISSORS };
 	
-	private Session<String> session;
-
 	private Move myMove;
+	
+	
+	private String adversary() {
+		return peerName().current();
+	}
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		session = SneerAndroid.sessionOnAndroidMainThread(this);
-		
-		alert("Choose your move against " + session.contactNickname().current(),
+		alert("Choose your move against " + adversary(),
 				options("Rock", "Paper", "Scissors"),
 				new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
 					myMove = Move.values()[option];
-					session.send(myMove.name());
+					sendMessage(myMove.name());
 					waitForAdversary();
 				}}
 			);
 	}
  
+
 	private void waitForAdversary() {
-		final ProgressDialog waiting = progressDialog("Waiting for " + session.contactNickname().current() + "...");
-		session.received().subscribe(new Action1<String>() { @Override public void call(String theirMove) {
+		final ProgressDialog waiting = progressDialog("Waiting for " + adversary() + "...");
+		receivedMessages().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
 			waiting.dismiss();
-			onReply(Move.valueOf(theirMove));
+			onReply(Move.valueOf((String)theirMove));
 		}});
 	}
 
 
 	private void onReply(Move theirMove) {
 		String outcome = outcome(theirMove);				
-		String message = "You used " + myMove + ". " + session.contactNickname().current() + " used " + theirMove + ".";
+		String message = "You used " + myMove + ". " + adversary() + " used " + theirMove + ".";
 
 		alert(outcome + " " + message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
 			finish();
@@ -80,10 +83,4 @@ public class ChallengeActivity extends Activity {
 		return options;
 	}
 	
-
-	@Override
-	protected void onDestroy() {
-		session.dispose();
-		super.onDestroy();
-	}
 }

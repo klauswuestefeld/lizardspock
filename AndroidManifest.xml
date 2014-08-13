@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChallengeActivity"
-            android:label="Challenge!!" >
+            android:name=".RPSActivity"
+            android:label="Rock Paper Scissors" >
             <intent-filter>
                 <!-- 
                  <data android:mimeType="rock-paper-scissors/move" />
