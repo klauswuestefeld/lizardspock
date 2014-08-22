@@ -1,50 +1,78 @@
 package sneer.tutorial.rockpaperscissors;
 
-import rx.functions.*;
+import static sneer.tutorial.rockpaperscissors.RPSActivity.Move.*;
 import sneer.android.ui.*;
 import android.app.*;
 import android.content.*;
-import android.os.*;
 
 public class RPSActivity extends SessionActivity {
 
 	enum Move { ROCK, PAPER, SCISSORS };
-	
-	private Move myMove;
-	
-	
-	private String adversary() {
-		return peerName().current();
+
+	private Move yourMove;
+	private boolean waitingForYourMove;
+
+	private String adversary;
+	private Move adversarysMove;
+	private ProgressDialog waitingForAdversarysMove;
+
+
+	@Override
+	protected void onPeerName(String name) {
+		adversary = name;
 	}
 
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void messageSent(Object content) {
+		yourMove = Move.valueOf((String)content);
+	}
 
-		alert("Choose your move against " + adversary(),
+
+	@Override
+	protected void messageReceived(Object content) {
+		adversarysMove = Move.valueOf((String)content);
+	}
+
+	
+	@Override
+	protected void afterNewMessage() {
+		animateGame();
+	}
+
+
+	private void animateGame() {
+		if (yourMove == null) {
+			waitForYourMove();
+			return;
+		}
+		
+		if (adversarysMove == null) {
+			waitingForAdversarysMove = progressDialog("Waiting for " + adversary + "...");
+			return;
+		}
+		if (waitingForAdversarysMove != null) waitingForAdversarysMove.dismiss();
+		
+		gameOver();
+	}
+
+
+	private void waitForYourMove() {
+		if (waitingForYourMove) return;
+		waitingForYourMove = true;
+		
+		alert("Choose your move against " + adversary,
 			options("Rock", "Paper", "Scissors"),
 			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
-				myMove = Move.values()[option];
-				sendMessage(myMove.name());
-				waitForAdversary();
+				sendMessage(Move.values()[option].name());
 			}}
 		);
 	}
- 
-
-	private void waitForAdversary() {
-		final ProgressDialog waiting = progressDialog("Waiting for " + adversary() + "...");
-		receivedMessages().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
-			waiting.dismiss();
-			onReply(Move.valueOf((String)theirMove));
-		}});
-	}
 
 
-	private void onReply(Move theirMove) {
-		String outcome = outcome(theirMove);				
-		String message = "You used " + myMove + ". " + adversary() + " used " + theirMove + ".";
+	private void gameOver() {
+		String outcome = outcome();				
+		String message = "You used " + yourMove + ". " + adversary + " used " + adversarysMove + ".";
 
 		alert(outcome + " " + message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
 			finish();
@@ -52,12 +80,12 @@ public class RPSActivity extends SessionActivity {
 	}
 
 
-	private String outcome(Move theirMove) {
-		if (myMove == theirMove) return "Draw!";
+	private String outcome() {
+		if (yourMove == adversarysMove) return "Draw!";
 
-		if (myMove == Move.ROCK     && theirMove == Move.SCISSORS) return "You win!";
-		if (myMove == Move.SCISSORS && theirMove == Move.PAPER   ) return "You win!";
-		if (myMove == Move.PAPER    && theirMove == Move.ROCK    ) return "You win!";
+		if (yourMove == ROCK     && adversarysMove == SCISSORS) return "You win!";
+		if (yourMove == SCISSORS && adversarysMove == PAPER   ) return "You win!";
+		if (yourMove == PAPER    && adversarysMove == ROCK    ) return "You win!";
 
 		return "You lose!";
 	}
@@ -71,9 +99,9 @@ public class RPSActivity extends SessionActivity {
 	}
 
 
-	private void alert(String titge, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
+	private void alert(String title, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
 		new AlertDialog.Builder(this)
-			.setTitle(titge)
+			.setTitle(title)
 			.setItems(items, onClickListener)
 			.show();
 	}
@@ -82,5 +110,5 @@ public class RPSActivity extends SessionActivity {
 	private CharSequence[] options(CharSequence... options) {
 		return options;
 	}
-	
+
 }
