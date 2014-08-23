@@ -13,25 +13,20 @@
         android:icon="@drawable/ic_launcher"
         android:label="Rock-Paper-Scissors"
         android:theme="@style/AppTheme" >
-        <activity android:name=".RPSLauncherActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".RPSActivity"
-            android:label="Rock Paper Scissors" >
-            <intent-filter>
-                <!-- 
-                 <data android:mimeType="rock-paper-scissors/move" />
-                <action android:name="android.intent.action.VIEW" />
-				-->
-                <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="sneer.tutorial.rockpaperscissors.CHALLENGE" />
-            </intent-filter>
-        </activity>
+		<activity
+		    
+		    android:name=".RPSActivity"
+		    android:label="Rock Paper Scissors">
+		    
+		    <intent-filter>
+		        <action android:name="android.intent.action.VIEW" />
+		    </intent-filter>
+		    
+		    <meta-data android:name="sneer:handler" android:value="SESSION" />
+		    <meta-data android:name="sneer:type" android:value="rock-paper-scissors/move" />
+		    <meta-data android:name="sneer:label" android:value="Play Rock Paper Scissors" />
+		    <meta-data android:name="sneer:icon" android:resource="@drawable/ic_launcher" />
+		</activity>
     </application>
 
 </manifest>
