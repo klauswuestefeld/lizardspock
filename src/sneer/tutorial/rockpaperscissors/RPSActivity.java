@@ -36,7 +36,7 @@ public class RPSActivity extends SessionActivity {
 
 	
 	@Override
-	protected void afterNewMessage() {
+	protected void react() {
 		animateGame();
 	}
 
