@@ -16,7 +16,7 @@
 		<activity
 		    
 		    android:name=".RPSActivity"
-		    android:label="Rock Paper Scissors">
+		    android:label="">
 		    
 		    <intent-filter>
 		        <action android:name="android.intent.action.VIEW" />

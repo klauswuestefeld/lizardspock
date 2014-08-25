@@ -4,6 +4,7 @@ import static sneer.tutorial.rockpaperscissors.RPSActivity.Move.*;
 import sneer.android.ui.*;
 import android.app.*;
 import android.content.*;
+import android.content.DialogInterface.OnCancelListener;
 
 public class RPSActivity extends SessionActivity {
 
@@ -95,6 +96,9 @@ public class RPSActivity extends SessionActivity {
 		ProgressDialog ret = ProgressDialog.show(this, null, message);
 		ret.setIndeterminate(true);
 		ret.setCancelable(true);
+		ret.setOnCancelListener(new OnCancelListener() {  @Override public void onCancel(DialogInterface dialog) {
+			finish();
+		} });
 		return ret;
 	}
 
@@ -103,7 +107,10 @@ public class RPSActivity extends SessionActivity {
 		new AlertDialog.Builder(this)
 			.setTitle(title)
 			.setItems(items, onClickListener)
-			.show();
+			.show()
+			.setOnCancelListener(new OnCancelListener() {  @Override public void onCancel(DialogInterface dialog) {
+				finish();
+			} });;
 	}
 
 
