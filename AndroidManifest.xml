@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="Rock-Paper-Scissors"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Dialog" >
 		<activity
 		    
 		    android:name=".RPSActivity"
