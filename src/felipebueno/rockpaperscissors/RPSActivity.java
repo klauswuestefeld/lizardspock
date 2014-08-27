@@ -76,7 +76,7 @@ public class RPSActivity extends SessionActivity {
 		if (waitingForYourMove) return;
 		waitingForYourMove = true;
 		
-		alert("Choose your move against " + adversary,
+		alert("Choose Your Move",
 			options("Rock", "Paper", "Scissors"),
 			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
 				sendMessage(Move.values()[option].name());
