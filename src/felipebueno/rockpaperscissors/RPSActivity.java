@@ -1,6 +1,6 @@
-package sneer.tutorial.rockpaperscissors;
+package felipebueno.rockpaperscissors;
 
-import static sneer.tutorial.rockpaperscissors.RPSActivity.Move.*;
+import static felipebueno.rockpaperscissors.RPSActivity.Move.*;
 import sneer.android.ui.*;
 import android.app.*;
 import android.content.*;
