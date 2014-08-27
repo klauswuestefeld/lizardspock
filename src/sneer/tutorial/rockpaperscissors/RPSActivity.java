@@ -25,22 +25,36 @@ public class RPSActivity extends SessionActivity {
 
 	
 	@Override
-	protected void messageSent(Object content) {
+	protected void replayMessageSent(Object content) {
 		yourMove = Move.valueOf((String)content);
 	}
 
 
 	@Override
-	protected void messageReceived(Object content) {
+	protected void replayMessageReceived(Object content) {
 		adversarysMove = Move.valueOf((String)content);
 	}
 
 	
 	@Override
-	protected void react() {
+	protected void onMessageReplayCompleted() {
 		animateGame();
 	}
 
+	
+	@Override
+	protected void newMessageSent(Object content) {
+		replayMessageSent(content);
+		animateGame();
+	}
+
+
+	@Override
+	protected void newMessageReceived(Object content) {
+		replayMessageReceived(content);
+		animateGame();
+	}
+	
 
 	private void animateGame() {
 		if (yourMove == null) {
