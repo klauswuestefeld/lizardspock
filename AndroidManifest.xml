@@ -22,10 +22,10 @@
 		        <action android:name="android.intent.action.VIEW" />
 		    </intent-filter>
 		    
-		    <meta-data android:name="sneer:handler" android:value="SESSION" />
-		    <meta-data android:name="sneer:type" android:value="rock-paper-scissors/move" />
-		    <meta-data android:name="sneer:label" android:value="Play Rock Paper Scissors" />
-		    <meta-data android:name="sneer:icon" android:resource="@drawable/ic_launcher" />
+		    <meta-data android:name="sneer:interaction-type" android:value="SESSION" />
+		    <meta-data android:name="sneer:tuple-type" android:value="rock-paper-scissors/move" />
+		    <meta-data android:name="sneer:menu-caption" android:value="Play Rock Paper Scissors" />
+		    <meta-data android:name="sneer:menu-icon" android:resource="@drawable/ic_launcher" />
 		</activity>
     </application>
 
