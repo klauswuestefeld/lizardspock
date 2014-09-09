@@ -13,14 +13,13 @@
         android:icon="@drawable/ic_launcher"
         android:label="Rock-Paper-Scissors"
         android:theme="@android:style/Theme.Dialog" >
-		<activity
-		    
-		    android:name=".RPSActivity"
-		    android:label="">
-		    
-		    <intent-filter>
-		        <action android:name="android.intent.action.VIEW" />
-		    </intent-filter>
+        <activity
+            android:name=".RPSActivity"
+            android:excludeFromRecents="true"
+            android:label="" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
 		    
 		    <meta-data android:name="sneer:interaction-type" android:value="SESSION" />
 		    <meta-data android:name="sneer:tuple-type" android:value="rock-paper-scissors/move" />
