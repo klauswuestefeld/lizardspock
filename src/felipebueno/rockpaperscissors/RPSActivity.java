@@ -117,7 +117,7 @@ public class RPSActivity extends SessionActivity {
 	}
 
 
-	private void alert(String title, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
+	protected void alert(String title, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
 		new AlertDialog.Builder(this)
 			.setTitle(title)
 			.setItems(items, onClickListener)
