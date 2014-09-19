@@ -6,7 +6,7 @@ import android.app.*;
 import android.content.*;
 import android.content.DialogInterface.OnCancelListener;
 
-public class RPSActivity extends SessionActivity {
+public class RPSActivity extends PartnerSessionActivity {
 
 	enum Move { ROCK, PAPER, SCISSORS };
 
@@ -17,46 +17,24 @@ public class RPSActivity extends SessionActivity {
 	private Move adversarysMove;
 	private ProgressDialog waitingForAdversarysMove;
 
-
+	
 	@Override
-	protected void onPeerName(String name) {
+	protected void onPartnerName(String name) {
 		adversary = name;
 	}
-
 	
 	@Override
-	protected void replayMessageSent(Object content) {
-		yourMove = Move.valueOf((String)content);
+	protected void onMessageSent(Object message) {
+		yourMove = Move.valueOf((String)message);
 	}
-
 
 	@Override
-	protected void replayMessageReceived(Object content) {
-		adversarysMove = Move.valueOf((String)content);
+	protected void onMessageFromPartner(Object message) {
+		adversarysMove = Move.valueOf((String)message);
 	}
-
-	
-	@Override
-	protected void onMessageReplayCompleted() {
-		animateGame();
-	}
-
-	
-	@Override
-	protected void newMessageSent(Object content) {
-		replayMessageSent(content);
-		animateGame();
-	}
-
 
 	@Override
-	protected void newMessageReceived(Object content) {
-		replayMessageReceived(content);
-		animateGame();
-	}
-	
-
-	private void animateGame() {
+	protected void update() {
 		if (yourMove == null) {
 			waitForYourMove();
 			return;
@@ -79,11 +57,11 @@ public class RPSActivity extends SessionActivity {
 		alert("Choose Your Move",
 			options("Rock", "Paper", "Scissors"),
 			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
-				sendMessage(Move.values()[option].name());
+				String move = Move.values()[option].name();
+				send(move, move);
 			}}
 		);
 	}
-
 
 	private void gameOver() {
 		String outcome = outcome();				
