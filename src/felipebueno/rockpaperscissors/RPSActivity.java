@@ -23,16 +23,19 @@ public class RPSActivity extends PartnerSessionActivity {
 		adversary = name;
 	}
 	
+	
 	@Override
 	protected void onMessageSent(Object message) {
 		yourMove = Move.valueOf((String)message);
 	}
 
+	
 	@Override
 	protected void onMessageFromPartner(Object message) {
 		adversarysMove = Move.valueOf((String)message);
 	}
 
+	
 	@Override
 	protected void update() {
 		if (yourMove == null) {
@@ -54,14 +57,12 @@ public class RPSActivity extends PartnerSessionActivity {
 		if (waitingForYourMove) return;
 		waitingForYourMove = true;
 		
-		alert("Choose Your Move",
-			options("Rock", "Paper", "Scissors"),
-			new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
-				String move = Move.values()[option].name();
-				send(move, move);
-			}}
-		);
+		alert("Choose Your Move", options("Rock", "Paper", "Scissors"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
+			String move = Move.values()[option].name();
+			send("Rock Paper Scissors Challenge!", move);
+		}});
 	}
+	
 
 	private void gameOver() {
 		String outcome = outcome();				
