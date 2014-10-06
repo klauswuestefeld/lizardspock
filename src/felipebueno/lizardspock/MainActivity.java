@@ -8,7 +8,7 @@ import android.content.DialogInterface.OnCancelListener;
 
 public class MainActivity extends PartnerSessionActivity {
 
-	enum Move { ROCK, PAPER, SCISSORS };
+	enum Move { ROCK, PAPER, SCISSORS, LIZARD, SPOCK };
 
 	private Move yourMove;
 	private boolean waitingForYourMove;
@@ -57,9 +57,9 @@ public class MainActivity extends PartnerSessionActivity {
 		if (waitingForYourMove) return;
 		waitingForYourMove = true;
 		
-		alert("Choose Your Move", options("Rock", "Paper", "Scissors"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
+		alert("Choose Your Move", options("Rock", "Paper", "Scissors", "Lizard", "Spock"), new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int option) {
 			String move = Move.values()[option].name();
-			send("Rock Paper Scissors Challenge!", move);
+			send("Lizard Spock Challenge!", move);
 		}});
 	}
 	
@@ -78,8 +78,19 @@ public class MainActivity extends PartnerSessionActivity {
 		if (yourMove == adversarysMove) return "Draw!";
 
 		if (yourMove == ROCK     && adversarysMove == SCISSORS) return "You win!";
+		if (yourMove == ROCK     && adversarysMove == LIZARD  ) return "You win!";
+		
 		if (yourMove == SCISSORS && adversarysMove == PAPER   ) return "You win!";
+		if (yourMove == SCISSORS && adversarysMove == LIZARD  ) return "You win!";
+		
 		if (yourMove == PAPER    && adversarysMove == ROCK    ) return "You win!";
+		if (yourMove == PAPER    && adversarysMove == SPOCK   ) return "You win!";
+		
+		if (yourMove == LIZARD   && adversarysMove == SPOCK   ) return "You win!";
+		if (yourMove == LIZARD   && adversarysMove == PAPER   ) return "You win!";
+		
+		if (yourMove == SPOCK    && adversarysMove == ROCK    ) return "You win!";
+		if (yourMove == SPOCK    && adversarysMove == SCISSORS) return "You win!";
 
 		return "You lose!";
 	}
