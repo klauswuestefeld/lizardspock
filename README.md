@@ -1,11 +1,11 @@
 Sneer API - 5 Minute Tutorial
 ====
 
-This is a game of Rock-Paper-Scissors ready to play with your friends on Sneer.
+This is a game of Rock Paper Scissors Lizard Spock ready to play with your friends on Sneer.
 
 ![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png) . ![alt tag](http://i.imgur.com/x7FQgFu.png)
 
-It is a plain Android project with a [single class](https://github.com/felipebueno/rockpaperscissors/blob/master/src/sneer/tutorial/rockpaperscissors/RockPaperScissorsActivity.java) implementing the game activity.
+It is a plain Android project with a [single class](https://github.com/felipebueno/lizardspock/blob/master/src/sneer/tutorial/lizardspock/MainActivity.java) implementing the game activity.
 
 This tutorial highlights the parts of the code that use the Sneer API.
 
@@ -28,7 +28,7 @@ Running
 Using the API
 ----
 
-Open the RockPaperScissorsActivity class and take a look at the code. We assume you are a [Sneer](https://play.google.com/store/search?q=SneerApp) user and know the basics of Android development.
+Open the MainActivity class and take a look at the code. We assume you are a [Sneer](https://play.google.com/store/search?q=SneerApp) user and know the basics of Android development.
 
 Opening the Sneer contacts activity to pick an adversary for a match:
 ```JAVA
@@ -46,7 +46,7 @@ All communication happens with values being published and subscribed on tree str
 
 Subscribing to challenges from a contact:
 ```JAVA
-cloud.path(contact.publicKey(), "games", "rock-paper-scissors", ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
+cloud.path(contact.publicKey(), "games", "...", ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
 	long matchTime = (Long)child.path().lastSegment();
 	...
 }});
@@ -54,7 +54,7 @@ cloud.path(contact.publicKey(), "games", "rock-paper-scissors", ME).children().s
 
 Is this an old match we already played?
 ```JAVA
-cloud.path(ME, "games", "rock-paper-scissors", contact.publicKey(), matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
+cloud.path(ME, "games", "...", contact.publicKey(), matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
 	if (exists) return;
 	...
 }});
@@ -64,19 +64,19 @@ Publishing happens on the user's own tree, so the first segment (public key) is 
 
 Publishing our move:
 ```JAVA
-cloud.path("games", "rock-paper-scissors", adversary.publicKey(), matchTime).pub("ROCK");
+cloud.path("games", "...", adversary.publicKey(), matchTime).pub("ROCK");
 ```
 
 Path segments and values can be: strings, long numbers, booleans, lists, sets or maps.
 
 Listening to moves from our adversary:
 ```JAVA
-cloud.path(adversary.publicKey(), "games", "rock-paper-scissors", ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
+cloud.path(adversary.publicKey(), "games", "...", ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
 	...(String)theirMove...
 }});
 ```
 
-That's it. If you want to learn how to beat your friends at Rock-Paper-Scissors, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play).
+That's it. If you want to learn how to beat your friends at Rock Paper Scissors, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play).
 
 RxJava
 ----

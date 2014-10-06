@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="felipebueno.rockpaperscissors"
+    package="felipebueno.lizardspock"
     android:versionCode="2"
     android:versionName="1.0" >
 
@@ -11,10 +11,10 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="Rock-Paper-Scissors"
+        android:label="Lizard Spock"
         android:theme="@android:style/Theme.Dialog" >
         <activity
-            android:name=".RPSActivity"
+            android:name=".MainActivity"
             android:excludeFromRecents="true"
             android:label="" >
             <intent-filter>
@@ -22,8 +22,8 @@
             </intent-filter>
 		    
 		    <meta-data android:name="sneer:plugin-type" android:value="PARTNER_SESSION" />
-		    <meta-data android:name="sneer:tuple-type" android:value="rock-paper-scissors/move" />
-		    <meta-data android:name="sneer:menu-caption" android:value="Play Rock Paper Scissors" />
+		    <meta-data android:name="sneer:tuple-type" android:value="lizard-spock/move" />
+		    <meta-data android:name="sneer:menu-caption" android:value="Play Lizard Spock" />
 		    <meta-data android:name="sneer:menu-icon" android:resource="@drawable/ic_launcher" />
 		</activity>
     </application>

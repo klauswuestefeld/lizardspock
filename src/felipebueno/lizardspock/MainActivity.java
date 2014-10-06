@@ -1,12 +1,12 @@
-package felipebueno.rockpaperscissors;
+package felipebueno.lizardspock;
 
-import static felipebueno.rockpaperscissors.RPSActivity.Move.*;
+import static felipebueno.lizardspock.MainActivity.Move.*;
 import sneer.android.ui.*;
 import android.app.*;
 import android.content.*;
 import android.content.DialogInterface.OnCancelListener;
 
-public class RPSActivity extends PartnerSessionActivity {
+public class MainActivity extends PartnerSessionActivity {
 
 	enum Move { ROCK, PAPER, SCISSORS };
 
