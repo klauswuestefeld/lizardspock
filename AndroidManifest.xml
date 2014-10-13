@@ -21,8 +21,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
 		    
-		    <meta-data android:name="sneer:plugin-type" android:value="PARTNER_SESSION" />
-		    <meta-data android:name="sneer:tuple-type" android:value="lizard-spock/move" />
+		    <meta-data android:name="sneer:partner-session-type" android:value="lizard-spock" />
 		    <meta-data android:name="sneer:menu-caption" android:value="Play Lizard Spock" />
 		    <meta-data android:name="sneer:menu-icon" android:resource="@drawable/ic_launcher" />
 		</activity>
