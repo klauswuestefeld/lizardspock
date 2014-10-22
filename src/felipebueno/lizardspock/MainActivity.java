@@ -25,7 +25,7 @@ public class MainActivity extends PartnerSessionActivity {
 	
 	
 	@Override
-	protected void onMessageSent(Object message) {
+	protected void onMessageToPartner(Object message) {
 		yourMove = Move.valueOf((String)message);
 	}
 
