@@ -1,12 +1,12 @@
 package felipebueno.lizardspock;
 
-import static felipebueno.lizardspock.MainActivity.Move.*;
+import static felipebueno.lizardspock.LizardSpockActivity.Move.*;
 import sneer.android.ui.*;
 import android.app.*;
 import android.content.*;
 import android.content.DialogInterface.OnCancelListener;
 
-public class MainActivity extends PartnerSessionActivity {
+public class LizardSpockActivity extends PartnerSessionActivity {
 
 	enum Move { ROCK, PAPER, SCISSORS, LIZARD, SPOCK };
 

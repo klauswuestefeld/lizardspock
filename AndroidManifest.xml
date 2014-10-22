@@ -14,7 +14,7 @@
         android:label="Lizard Spock"
         android:theme="@android:style/Theme.Dialog" >
         <activity
-            android:name=".MainActivity"
+            android:name=".LizardSpockActivity"
             android:excludeFromRecents="true"
             android:label="" >
             <intent-filter>
