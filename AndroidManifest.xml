@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="Lizard Spock"
-        android:theme="@android:style/Theme.Dialog" >
+        android:theme="@android:style/Theme.DeviceDefault.Dialog" >
         <activity
             android:name=".LizardSpockActivity"
             android:excludeFromRecents="true"
@@ -20,11 +20,24 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
-		    
-		    <meta-data android:name="sneer:partner-session-type" android:value="lizard-spock" />
-		    <meta-data android:name="sneer:menu-caption" android:value="Play Lizard Spock" />
-		    <meta-data android:name="sneer:menu-icon" android:resource="@drawable/ic_launcher" />
-		</activity>
+
+            <!-- <meta-data android:name="sneer:plugin-type" android:value="PARTNER_SESSION" /> -->
+            <!-- <meta-data android:name="sneer:tuple-type" android:value="rock-paper-scissors/move" /> -->
+            <!-- <meta-data android:name="sneer:menu-caption" android:value="Play Rock Paper Scissors" /> -->
+            <!-- <meta-data android:name="sneer:menu-icon" android:resource="@drawable/ic_launcher" /> -->
+            <meta-data
+                android:name="sneer:plugin-type"
+                android:value="PARTNER_SESSION" />
+            <meta-data
+                android:name="sneer:tuple-type"
+                android:value="rock-paper-scissors/move" />
+            <meta-data
+                android:name="sneer:menu-caption"
+                android:value="Play Rock Paper Scissors" />
+            <meta-data
+                android:name="sneer:menu-icon"
+                android:resource="@drawable/ic_launcher" />
+        </activity>
     </application>
 
 </manifest>
