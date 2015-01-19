@@ -24,25 +24,25 @@ public class LizardSpockActivity extends PartnerSessionActivity {
 
 
 	@Override
-	protected void onPartnerName(String name) {
+	protected void onPartnerName(String name) {  ///////////// Sneer API
 		adversary = name;
 	}
 
 
 	@Override
-	protected void onMessageToPartner(Object message) {
+	protected void onMessageToPartner(Object message) {  ///////////// Sneer API
 		yourMove = Move.valueOf((String)message);
 	}
 
 
 	@Override
-	protected void onMessageFromPartner(Object message) {
+	protected void onMessageFromPartner(Object message) {  ///////////// Sneer API
 		adversarysMove = Move.valueOf((String)message);
 	}
 
 
 	@Override
-	protected void update() {
+	protected void update() {  ///////////// Sneer API
 		if (yourMove == null) {
 			waitForYourMove();
 			return;
@@ -65,7 +65,7 @@ public class LizardSpockActivity extends PartnerSessionActivity {
 		alert("Choose Your Move", options("Rock", "Paper", "Scissors", "Lizard", "Spock"), new DialogInterface.OnClickListener() { @Override
 		public void onClick(DialogInterface dialog, int option) {
 			String move = Move.values()[option].name();
-			send("Lizard Spock Challenge!", move);
+			send("Lizard Spock Challenge!", move);  ///////////// Sneer API
 		}});
 	}
 
