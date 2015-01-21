@@ -33,7 +33,7 @@
                 android:value="rock-paper-scissors/move" />
             <meta-data
                 android:name="sneer:menu-caption"
-                android:value="Play Rock Paper Scissors" />
+                android:value="Play Lizard Spock" />
             <meta-data
                 android:name="sneer:menu-icon"
                 android:resource="@drawable/ic_launcher" />
