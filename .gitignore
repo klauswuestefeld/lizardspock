@@ -1,3 +1,7 @@
+.classpath
+.project
+.settings
+
 libs/*.jar
 
 # Built application files
