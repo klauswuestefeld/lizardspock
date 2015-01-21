@@ -118,10 +118,10 @@ public class LizardSpockActivity extends PartnerSessionActivity {
 		new AlertDialog.Builder(this)
 			.setTitle(title)
 			.setItems(items, onClickListener)
-			.show()
 			.setOnCancelListener(new OnCancelListener() {  @Override public void onCancel(DialogInterface dialog) {
 				finish();
-			}});;
+			}})
+            .show();
 	}
 
 
