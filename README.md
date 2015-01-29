@@ -33,7 +33,7 @@ Using the API
 
 Open the MainActivity class and take a look at the code. We assume you are a [Sneer](https://play.google.com/store/search?q=SneerApp) user and know the basics of Android development.
 
-step 1
+step 1 WIP
 ```JAVA
 	@Override
 	protected void onPartnerName(String name) {
@@ -41,7 +41,7 @@ step 1
 	}
 ```
 
-step 2
+step 2 WIP
 ```JAVA
 	@Override
 	protected void onMessageToPartner(Object message) {
@@ -49,7 +49,7 @@ step 2
 	}
 ```
 
-step 3
+step 3 WIP
 ```JAVA
 	@Override
 	protected void onMessageFromPartner(Object message) {
@@ -57,7 +57,7 @@ step 3
 	}
 ```
 
-step 4
+step 4 WIP
 ```JAVA
 	@Override
 	protected void update() {
@@ -76,6 +76,8 @@ step 4
 		gameOver();
 	}
 ```
+
+<TO BE CONTINUED...> 
 
 That's it. Only five methods.
 
