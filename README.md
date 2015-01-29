@@ -1,3 +1,6 @@
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/iapcKVn7DdY/0.jpg)](http://www.youtube.com/watch?v=iapcKVn7DdY)
+
+
 Sneer API - 5 Minute Tutorial
 ====
 
@@ -5,7 +8,7 @@ This is a game of Rock Paper Scissors Lizard Spock ready to play with your frien
 
 ![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png) . ![alt tag](http://i.imgur.com/x7FQgFu.png)
 
-It is a plain Android project with a [single class](https://github.com/felipebueno/lizardspock/blob/master/src/felipebueno/lizardspock/LizardSpockActivity.java) implementing the game activity.
+It is a plain Android project with a [single class](https://github.com/felipebueno/lizardspock/blob/master/src/felipebueno/lizardspock/LizardSpockActivity.java) implementing the entire game.
 
 This tutorial highlights the parts of the code that use the Sneer API.
 
@@ -32,27 +35,48 @@ Open the MainActivity class and take a look at the code. We assume you are a [Sn
 
 step 1
 ```JAVA
-
+	@Override
+	protected void onPartnerName(String name) {
+		adversary = name;
+	}
 ```
 
 step 2
 ```JAVA
-
+	@Override
+	protected void onMessageToPartner(Object message) {
+		yourMove = Move.valueOf((String)message);
+	}
 ```
 
 step 3
 ```JAVA
-
+	@Override
+	protected void onMessageFromPartner(Object message) {
+		adversarysMove = Move.valueOf((String)message);
+	}
 ```
 
 step 4
 ```JAVA
+	@Override
+	protected void update() {
+		if (yourMove == null) {
+			waitForYourMove();
+			return;
+		}
 
+		if (adversarysMove == null) {
+			waitingForAdversarysMove = progressDialog("Waiting for " + adversary + "...");
+			return;
+		}
+		if (waitingForAdversarysMove != null)
+		    waitingForAdversarysMove.dismiss();
+
+		gameOver();
+	}
 ```
 
-step 5
-```JAVA
+That's it. Only five methods.
 
-```
-
-That's it. If you want to learn how to beat your friends at Rock Paper Scissors Lizard Spock, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play) :).
+If you want to learn how to beat your friends at Rock Paper Scissors Lizard Spock, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play) :).
