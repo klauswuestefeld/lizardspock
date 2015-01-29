@@ -20,7 +20,7 @@ Running
     - Run gradle on Windows: ```gradlew.bat```
     - Download the latest [sneer-api-nodeps.jar](http://dynamic.sneer.me/dist/snapi-nodeps/) into the project's libs folder.
 
-  - Import the project into [Eclipse Android SDK](http://developer.android.com/sdk/index.html).
+  - Import the project into [Android Studio](http://developer.android.com/sdk/index.html).
 
   - Run on devices with Sneer installed and play. :)
 
@@ -30,59 +30,29 @@ Using the API
 
 Open the MainActivity class and take a look at the code. We assume you are a [Sneer](https://play.google.com/store/search?q=SneerApp) user and know the basics of Android development.
 
-Opening the Sneer contacts activity to pick an adversary for a match:
+step 1
 ```JAVA
-ContactPicker.pickContact(this).subscribe(new Action1<Contact>() {@Override public void call(Contact contact) {
-	adversary = contact;
-}});
+
 ```
 
-Accessing the Sneer cloud:
+step 2
 ```JAVA
-cloud = Cloud.onAndroidMainThread(this);
+
 ```
 
-All communication happens with values being published and subscribed on tree structures. The first segment on the path is the root of the tree. It is the public key of the owner of that tree.
-
-Subscribing to challenges from a contact:
+step 3
 ```JAVA
-cloud.path(contact.publicKey(), "games", "...", ME).children().subscribe(new Action1<PathEvent>() { @Override public void call(final PathEvent child) {
-	long matchTime = (Long)child.path().lastSegment();
-	...
-}});
+
 ```
 
-Is this an old match we already played?
+step 4
 ```JAVA
-cloud.path(ME, "games", "...", contact.publicKey(), matchTime).exists(1000, TimeUnit.MILLISECONDS).subscribe(new Action1<Boolean>() { @Override public void call(Boolean exists) {
-	if (exists) return;
-	...
-}});
+
 ```
 
-Publishing happens on the user's own tree, so the first segment (public key) is omitted.
-
-Publishing our move:
+step 5
 ```JAVA
-cloud.path("games", "...", adversary.publicKey(), matchTime).pub("ROCK");
+
 ```
 
-Path segments and values can be: strings, long numbers, booleans, lists, sets or maps.
-
-Listening to moves from our adversary:
-```JAVA
-cloud.path(adversary.publicKey(), "games", "...", ME, matchTime).value().subscribe(new Action1<Object>() { @Override public void call(Object theirMove) {
-	...(String)theirMove...
-}});
-```
-
-That's it. If you want to learn how to beat your friends at Rock Paper Scissors, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play).
-
-RxJava
-----
-
-The code above uses RxJava, a reactive programming lib included in the [Sneer API jar](http://search.maven.org/#browse%7C-358320422). RxJava provides [Observables](https://github.com/Netflix/RxJava/wiki/Observable), that make it easier to write code to handle concurrent, assynchronous events.
-
-You can use it for simple callbacks, as above, or combine the events in many powerful ways.
-
-RxJava has [great documentation](https://github.com/Netflix/RxJava/wiki/Observable) with many [cool diagrams](https://github.com/Netflix/RxJava/wiki/Combining-Observables#merge).
+That's it. If you want to learn how to beat your friends at Rock Paper Scissors Lizard Spock, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play) :).
