@@ -6,7 +6,7 @@ Sneer API - 5 Minute Tutorial
 
 This is a game of Rock Paper Scissors Lizard Spock ready to play with your friends on Sneer.
 
-![alt tag](http://i.imgur.com/nBrPhhz.png) . ![alt tag](http://i.imgur.com/4ESnGSw.png) . ![alt tag](http://i.imgur.com/x7FQgFu.png)
+![alt tag](https://raw.githubusercontent.com/felipebueno/lizardspock/master/screenshots/0.png) . ![alt tag](https://raw.githubusercontent.com/felipebueno/lizardspock/master/screenshots/1.png) . ![alt tag](https://raw.githubusercontent.com/felipebueno/lizardspock/master/screenshots/2.png) . ![alt tag](https://raw.githubusercontent.com/felipebueno/lizardspock/master/screenshots/3.png)
 
 It is a plain Android project with a [single class](https://github.com/felipebueno/lizardspock/blob/master/src/felipebueno/lizardspock/LizardSpockActivity.java) implementing the entire game.
 
