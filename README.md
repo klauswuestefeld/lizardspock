@@ -77,7 +77,7 @@ step 4 WIP
 	}
 ```
 
-<TO BE CONTINUED...> 
+TO BE CONTINUED...
 
 That's it. Only five methods.
 
