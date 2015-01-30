@@ -79,6 +79,6 @@ step 4 WIP
 
 TO BE CONTINUED...
 
-That's it. Only five methods.
+That's it. Only four methods.
 
 If you want to learn how to beat your friends at Rock Paper Scissors Lizard Spock, take a look at [advanced gambit play](http://www.worldrps.com/gambit-play) :).
