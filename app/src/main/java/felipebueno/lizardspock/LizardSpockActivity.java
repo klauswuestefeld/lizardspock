@@ -1,15 +1,17 @@
 package felipebueno.lizardspock;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+
+import sneer.android.ui.PartnerSessionActivity;
+
 import static felipebueno.lizardspock.LizardSpockActivity.Move.LIZARD;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.PAPER;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.ROCK;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.SCISSORS;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.SPOCK;
-import sneer.android.ui.PartnerSessionActivity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 
 public class LizardSpockActivity extends PartnerSessionActivity {
 
@@ -31,13 +33,13 @@ public class LizardSpockActivity extends PartnerSessionActivity {
 
 	@Override
 	protected void onMessageToPartner(Object message) {  ///////////// Sneer API
-		yourMove = Move.valueOf((String)message);
+		yourMove = Move.valueOf((String) message);
 	}
 
 
 	@Override
 	protected void onMessageFromPartner(Object message) {  ///////////// Sneer API
-		adversarysMove = Move.valueOf((String)message);
+		adversarysMove = Move.valueOf((String) message);
 	}
 
 
