@@ -2,7 +2,7 @@
 .project
 .settings
 
-libs/*.jar
+app/libs/*.jar
 
 # Built application files
 *.apk
