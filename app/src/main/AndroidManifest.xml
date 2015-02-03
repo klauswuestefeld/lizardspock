@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="felipebueno.lizardspock" >
+    package="felipebueno.lizardspock">
 
     <application
         android:allowBackup="true"
@@ -15,10 +15,6 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
 
-            <!-- <meta-data android:name="sneer:plugin-type" android:value="PARTNER_SESSION" /> -->
-            <!-- <meta-data android:name="sneer:tuple-type" android:value="rock-paper-scissors/move" /> -->
-            <!-- <meta-data android:name="sneer:menu-caption" android:value="Play Rock Paper Scissors" /> -->
-            <!-- <meta-data android:name="sneer:menu-icon" android:resource="@drawable/ic_launcher" /> -->
             <meta-data
                 android:name="sneer:plugin-type"
                 android:value="PARTNER_SESSION" />
