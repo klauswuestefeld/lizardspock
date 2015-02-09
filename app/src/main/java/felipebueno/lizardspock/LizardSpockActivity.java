@@ -44,8 +44,8 @@ public class LizardSpockActivity extends PartnerSessionActivity {
 
 
 	@Override
-	protected void update() {  ///////////// Sneer API
-		if (yourMove == null) {
+	protected void refresh() {  ///////////// Sneer API
+        if (yourMove == null) {
 			waitForYourMove();
 			return;
 		}
