@@ -115,7 +115,6 @@ public class LizardSpockActivity extends PartnerSessionActivity {
 	}
 
 
-	@Override
 	protected void alert(String title, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
 		new AlertDialog.Builder(this)
 			.setTitle(title)
