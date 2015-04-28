@@ -1,10 +1,13 @@
 package felipebueno.lizardspock;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.os.Bundle;
 
+import sneer.android.PartnerSession;
 import sneer.android.ui.PartnerSessionActivity;
 
 import static felipebueno.lizardspock.LizardSpockActivity.Move.LIZARD;
@@ -13,7 +16,7 @@ import static felipebueno.lizardspock.LizardSpockActivity.Move.ROCK;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.SCISSORS;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.SPOCK;
 
-public class LizardSpockActivity extends PartnerSessionActivity {
+public class LizardSpockActivity extends Activity {
 
 	enum Move { ROCK, PAPER, SCISSORS, LIZARD, SPOCK };
 
@@ -24,26 +27,31 @@ public class LizardSpockActivity extends PartnerSessionActivity {
 	private Move adversarysMove;
 	private ProgressDialog waitingForAdversarysMove;
 
-
 	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		/*
+		PartnerSession ps = PartnerSession.join(this, getIntent(), new PartnerSession.Listener() {
+
+		});
+		*/
+	}
+
 	protected void onPartnerName(String name) {  ///////////// Sneer API
 		adversary = name;
 	}
 
 
-	@Override
 	protected void onMessageToPartner(Object message) {  ///////////// Sneer API
 		yourMove = Move.valueOf((String) message);
 	}
 
 
-	@Override
 	protected void onMessageFromPartner(Object message) {  ///////////// Sneer API
 		adversarysMove = Move.valueOf((String) message);
 	}
 
 
-	@Override
 	protected void refresh() {  ///////////// Sneer API
         if (yourMove == null) {
 			waitForYourMove();
@@ -67,7 +75,7 @@ public class LizardSpockActivity extends PartnerSessionActivity {
 		alert("Choose Your Move", options("Rock", "Paper", "Scissors", "Lizard", "Spock"), new DialogInterface.OnClickListener() { @Override
 		public void onClick(DialogInterface dialog, int option) {
 			String move = Move.values()[option].name();
-			send("Lizard Spock Challenge!", move);  ///////////// Sneer API
+			//send("Lizard Spock Challenge!", move);  ///////////// Sneer API
 		}});
 	}
 
