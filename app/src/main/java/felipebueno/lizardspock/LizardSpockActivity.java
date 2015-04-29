@@ -7,8 +7,10 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 
+import java.util.List;
+
+import sneer.android.Message;
 import sneer.android.PartnerSession;
-import sneer.android.ui.PartnerSessionActivity;
 
 import static felipebueno.lizardspock.LizardSpockActivity.Move.LIZARD;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.PAPER;
@@ -23,32 +25,42 @@ public class LizardSpockActivity extends Activity {
 	private Move yourMove;
 	private boolean waitingForYourMove;
 
-	private String adversary;
 	private Move adversarysMove;
 	private ProgressDialog waitingForAdversarysMove;
+	private PartnerSession session;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		/*
-		PartnerSession ps = PartnerSession.join(this, getIntent(), new PartnerSession.Listener() {
+		session = PartnerSession.join(this, getIntent(), new PartnerSession.Listener() {
 
+			@Override
+			public void onHistoryReplay(List<Message> history) {
+				for (Message message : history)
+					handle(message);
+				refresh();
+			}
+
+			@Override
+			public void onNewMessage(Message message) {
+				handle(message);
+				refresh();
+			}
 		});
-		*/
 	}
 
-	protected void onPartnerName(String name) {  ///////////// Sneer API
-		adversary = name;
+	@Override
+	protected void onDestroy() {
+		session.close();
+		super.onDestroy();
 	}
 
-
-	protected void onMessageToPartner(Object message) {  ///////////// Sneer API
-		yourMove = Move.valueOf((String) message);
-	}
-
-
-	protected void onMessageFromPartner(Object message) {  ///////////// Sneer API
-		adversarysMove = Move.valueOf((String) message);
+	private void handle(Message message) {
+		Move move = Move.valueOf((String) message.payload());
+		if (message.isOwn())
+			yourMove = move;
+		else
+			adversarysMove = move;
 	}
 
 
@@ -59,7 +71,7 @@ public class LizardSpockActivity extends Activity {
 		}
 
 		if (adversarysMove == null) {
-			waitingForAdversarysMove = progressDialog("Waiting for " + adversary + "...");
+			waitingForAdversarysMove = progressDialog("Waiting for adversary...");
 			return;
 		}
 		if (waitingForAdversarysMove != null) waitingForAdversarysMove.dismiss();
@@ -75,14 +87,14 @@ public class LizardSpockActivity extends Activity {
 		alert("Choose Your Move", options("Rock", "Paper", "Scissors", "Lizard", "Spock"), new DialogInterface.OnClickListener() { @Override
 		public void onClick(DialogInterface dialog, int option) {
 			String move = Move.values()[option].name();
-			//send("Lizard Spock Challenge!", move);  ///////////// Sneer API
+			session.send(move);  ///////////// Sneer API
 		}});
 	}
 
 
 	private void gameOver() {
 		String outcome = outcome();
-		String message = "You used " + yourMove + ". " + adversary + " used " + adversarysMove + ".";
+		String message = "You used " + yourMove + ". Adversary used " + adversarysMove + ".";
 
 		alert(outcome + " " + message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
 			finish();
