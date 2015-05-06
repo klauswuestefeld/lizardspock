@@ -7,7 +7,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="Lizard Spock"
         android:theme="@android:style/Theme.DeviceDefault.Dialog">
+
         <meta-data android:name="SneerApp" android:value=""/>
+
         <activity
             android:name=".LizardSpockActivity"
             android:excludeFromRecents="true"

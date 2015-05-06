@@ -7,8 +7,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 
-import java.util.List;
-
 import sneer.android.Message;
 import sneer.android.PartnerSession;
 
