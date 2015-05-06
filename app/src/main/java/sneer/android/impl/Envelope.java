@@ -3,18 +3,19 @@ package sneer.android.impl;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/** A Parcelable envelope for any primitive value, array, String, Date and Collection. */
 public class Envelope implements Parcelable {
 
-	final Object value;
+	final public Object content;
 
-	
-	public static Envelope of(Object o) {
-		return new Envelope(o);
+
+	public static Envelope envelope(Object content) {
+		return new Envelope(content);
 	}
 
 	
-	Envelope(Object value) {
-		this.value = value;
+	private Envelope(Object content) {
+		this.content = content;
 	}
 	
 	
@@ -26,35 +27,19 @@ public class Envelope implements Parcelable {
 	
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeValue(value);
+		dest.writeValue(content);
 	}
 
-	
-	public static final Creator<Envelope> CREATOR = new Creator<Envelope>() {
-		public Envelope createFromParcel(Parcel in) {
-			return Envelope.of(in.readValue(null));
-		}
-		
-		public Envelope[] newArray(int size) {
-			return new Envelope[size];
-		}
-	};
-
-	
-	public Object get() {
-		return value;
-	}
-	
 	
 	@Override
 	public String toString() {
-		return "Value(" + value + ")";
+		return "Envelope(" + content + ")";
 	}
 
 	
 	@Override
 	public int hashCode() {
-		return value == null ? 0 : value.hashCode();
+		return content == null ? 0 : content.hashCode();
 	}
 	
 
@@ -67,10 +52,10 @@ public class Envelope implements Parcelable {
 		if (getClass() != obj.getClass())
 			return false;
 		Envelope other = (Envelope) obj;
-		if (value == null) {
-			if (other.value != null)
+		if (content == null) {
+			if (other.content != null)
 				return false;
-		} else if (!value.equals(other.value))
+		} else if (!content.equals(other.content))
 			return false;
 		return true;
 	}

@@ -32,39 +32,35 @@ public class LizardSpockActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		session = PartnerSession.join(this, getIntent(), new PartnerSession.Listener() {
-
+		session = PartnerSession.join(this, getIntent(), new PartnerSession.Listener() {      /////////////Sneer API
 			@Override
-			public void onHistoryReplay(List<Message> history) {
-				for (Message message : history)
-					handle(message);
+			public void onUpToDate() {      /////////////Sneer API
 				refresh();
 			}
 
 			@Override
-			public void onNewMessage(Message message) {
+			public void onMessage(Message message) {      /////////////Sneer API
 				handle(message);
-				refresh();
 			}
 		});
 	}
 
 	@Override
 	protected void onDestroy() {
-		session.close();
+		session.close();     /////////////Sneer API
 		super.onDestroy();
 	}
 
 	private void handle(Message message) {
 		Move move = Move.valueOf((String) message.payload());
-		if (message.isOwn())
+		if (message.wasSentByMe())
 			yourMove = move;
 		else
 			adversarysMove = move;
 	}
 
 
-	protected void refresh() {  ///////////// Sneer API
+	private void refresh() {
         if (yourMove == null) {
 			waitForYourMove();
 			return;

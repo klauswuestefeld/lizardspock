@@ -1,6 +1,9 @@
 package sneer.android;
 
 public interface Message {
-	boolean isOwn();
+
+	boolean wasSentByMe();
+
 	Object payload();
+
 }
