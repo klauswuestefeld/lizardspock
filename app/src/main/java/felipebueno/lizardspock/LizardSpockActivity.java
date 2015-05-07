@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
+import android.util.Log;
 
 import sneer.android.Message;
 import sneer.android.PartnerSession;
@@ -39,8 +40,11 @@ public class LizardSpockActivity extends Activity {
 			@Override
 			public void onMessage(Message message) {      /////////////Sneer API
 				handle(message);
+				Log.d(getClass().getSimpleName(), "Remove refresh() from here");
+				refresh();
 			}
 		});
+		refresh();
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import android.os.Messenger;
 import android.widget.Toast;
 
 import java.io.Closeable;
+import java.util.Map;
 
 import sneer.android.impl.Envelope;
 import sneer.android.impl.IPCProtocol;
@@ -105,9 +106,29 @@ public class PartnerSession implements Closeable {
 		public void handleMessage(android.os.Message msg) {
 			Bundle data = msg.getData();
 			data.setClassLoader(Envelope.class.getClassLoader());
-			Toast.makeText(context, ((Envelope) data.getParcelable(ENVELOPE)).content.toString(), Toast.LENGTH_LONG).show();
+			Object content = ((Envelope) data.getParcelable(ENVELOPE)).content;
+			if (content.equals("upToDate"))
+				listener.onUpToDate();
+			else
+				listener.onMessage(getMessage(content));
+
 		}
 
+	}
+
+	private Message getMessage(Object content) {
+		final Map<String, Object> map = (Map<String, Object>)content;
+		return new Message() {
+			@Override
+			public boolean wasSentByMe() {
+				return (boolean) map.get("wasSentByMe");
+			}
+
+			@Override
+			public Object payload() {
+				return map.get("payload");
+			}
+		};
 	}
 
 
