@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Messenger;
-import android.os.RemoteException;
 import android.widget.Toast;
 
 import java.io.Closeable;
 
+import sneer.android.impl.Envelope;
 import sneer.android.impl.IPCProtocol;
 
 import static android.content.Context.BIND_AUTO_CREATE;
@@ -100,6 +100,14 @@ public class PartnerSession implements Closeable {
 
 
 	private class FromSneerHandler extends Handler {
+
+		@Override
+		public void handleMessage(android.os.Message msg) {
+			Bundle data = msg.getData();
+			data.setClassLoader(Envelope.class.getClassLoader());
+			Toast.makeText(context, ((Envelope) data.getParcelable(ENVELOPE)).content.toString(), Toast.LENGTH_LONG).show();
+		}
+
 	}
 
 

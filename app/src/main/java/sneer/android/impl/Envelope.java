@@ -13,35 +13,46 @@ public class Envelope implements Parcelable {
 		return new Envelope(content);
 	}
 
-	
+
 	private Envelope(Object content) {
 		this.content = content;
 	}
-	
-	
+
+
 	@Override
 	public int describeContents() {
 		return 0;
 	}
 
-	
+
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeValue(content);
 	}
 
-	
+
+	public static final Creator<Envelope> CREATOR = new Creator<Envelope>() {
+		public Envelope createFromParcel(Parcel in) {
+			return Envelope.envelope(in.readValue(null));
+		}
+
+		public Envelope[] newArray(int size) {
+			return new Envelope[size];
+		}
+	};
+
+
 	@Override
 	public String toString() {
 		return "Envelope(" + content + ")";
 	}
 
-	
+
 	@Override
 	public int hashCode() {
 		return content == null ? 0 : content.hashCode();
 	}
-	
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -59,5 +70,5 @@ public class Envelope implements Parcelable {
 			return false;
 		return true;
 	}
-	
+
 }
