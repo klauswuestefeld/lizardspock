@@ -24,5 +24,4 @@ Running
 
   - Import the project into [Android Studio](http://developer.android.com/sdk/index.html).
 
-  - Run on devices with Sneer installed and play. :)
-play](http://www.worldrps.com/gambit-play) :).
+  - Run on devices with Sneer installed and [play](http://www.worldrps.com/gambit-play) :).
