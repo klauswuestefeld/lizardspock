@@ -10,7 +10,7 @@ This is a game of Rock-Paper-Scissors-Lizard-Spock ready to play with your frien
 
 It is a plain Android project with a [single class](https://github.com/felipebueno/lizardspock/blob/master/app/src/main/java/felipebueno/lizardspock/LizardSpockActivity.java) implementing the entire game.
 
-This tutorial highlights the parts of the code that use the Sneer API.
+The parts of the code that use the Sneer API are highlighted.
 
 
 Running
