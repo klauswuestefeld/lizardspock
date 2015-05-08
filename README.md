@@ -18,7 +18,7 @@ Running
 
   - Clone this project using git.
 
-  - The Sneer API is available from the [Maven Central](http://search.maven.org/#browse%7C-358320422) repository. For this project, get it with one of these options:
+  - The Sneer API is available from the [Maven Central](http://search.maven.org/#browse%7C-358320422) repository. To get it for this project:
     - Run gradle on Linux: ```./gradlew```
     - Run gradle on Windows: ```gradlew.bat```
 
