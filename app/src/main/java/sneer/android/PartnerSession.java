@@ -34,6 +34,7 @@ public class PartnerSession implements Closeable {
 	}
 
 	public void send(Object payload) {
+		await(connectionPending);
 		sendToSneer(payload);
 	}
 
@@ -51,8 +52,8 @@ public class PartnerSession implements Closeable {
 
 	private final Activity activity;
     private final Listener listener;
-	private final ServiceConnection connection = createConnection();
 	private final CountDownLatch connectionPending = new CountDownLatch(1);
+	private final ServiceConnection connection = createConnection();
 	private Messenger toSneer;
 
 
@@ -84,11 +85,8 @@ public class PartnerSession implements Closeable {
 			connection,
 			BIND_AUTO_CREATE | BIND_IMPORTANT
 		);
-	    if (!success) {
+	    if (!success)
 		    finish("Unable to connect to Sneer");
-		    return;
-	    }
-		await(connectionPending);
     }
 
 
