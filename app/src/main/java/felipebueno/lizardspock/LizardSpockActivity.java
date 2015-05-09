@@ -40,11 +40,8 @@ public class LizardSpockActivity extends Activity {
 			@Override
 			public void onMessage(Message message) {      /////////////Sneer API
 				handle(message);
-				Log.d(getClass().getSimpleName(), "Remove refresh() from here");
-				refresh();
 			}
 		});
-		refresh();
 	}
 
 	@Override

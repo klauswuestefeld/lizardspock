@@ -1,7 +1,7 @@
 package sneer.android;
 
+import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.io.Closeable;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import sneer.android.impl.Envelope;
 import sneer.android.impl.IPCProtocol;
@@ -24,8 +25,8 @@ import static sneer.android.impl.IPCProtocol.ENVELOPE;
 
 public class PartnerSession implements Closeable {
 
-	public static PartnerSession join(Context context, Intent intent, Listener listener) {
-		return new PartnerSession(context, intent, listener);
+	public static PartnerSession join(Activity activity, Listener listener) {
+		return new PartnerSession(activity, listener);
 	}
 
 	public boolean wasStartedByMe() {
@@ -44,13 +45,14 @@ public class PartnerSession implements Closeable {
 
 	@Override
 	public void close() {
-		context.unbindService(connection);
+		activity.unbindService(connection);
 	}
 
 
-	private final Context context;
+	private final Activity activity;
     private final Listener listener;
 	private final ServiceConnection connection = createConnection();
+	private final CountDownLatch connectionPending = new CountDownLatch(1);
 	private Messenger toSneer;
 
 
@@ -61,32 +63,43 @@ public class PartnerSession implements Closeable {
 				toSneer = new Messenger(service);
 				Messenger callback = new Messenger(new FromSneerHandler());
 				sendToSneer(callback);
+				connectionPending.countDown();
 			}
 
 			@Override
 			public void onServiceDisconnected(ComponentName name) {
 				toSneer = null;
+				finish("Connection to Sneer was lost");
+				connectionPending.countDown();
 			}
 		};
 	}
 
 
-    private PartnerSession(Context context, Intent intent, Listener listener) {
-		this.context = context;
+    private PartnerSession(Activity activity, Listener listener) {
+		this.activity = activity;
         this.listener = listener;
-		context.bindService(
-			intent.<Intent>getParcelableExtra(IPCProtocol.JOIN_SESSION),
+		boolean success = activity.bindService(
+			activity.getIntent().<Intent>getParcelableExtra(IPCProtocol.JOIN_SESSION),
 			connection,
 			BIND_AUTO_CREATE | BIND_IMPORTANT
 		);
+	    if (!success) {
+		    finish("Unable to connect to Sneer");
+		    return;
+	    }
+		await(connectionPending);
     }
 
 
+	private void finish(String endingToast) {
+		toast(endingToast);
+		activity.finish();
+	}
+
+
 	private void sendToSneer(Object data) {
-		android.os.Message msg = obtain();
-		Bundle bundle = new Bundle();
-		bundle.putParcelable(ENVELOPE, envelope(data));
-		msg.setData(bundle);
+		android.os.Message msg = asMessage(data);
 		try {
 			doSendToSneer(msg);
 		} catch (Exception e) {
@@ -94,39 +107,49 @@ public class PartnerSession implements Closeable {
 		}
 	}
 
+
+	private android.os.Message asMessage(Object data) {
+		android.os.Message ret = obtain();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(ENVELOPE, envelope(data));
+		ret.setData(bundle);
+		return ret;
+	}
+
+
 	private void doSendToSneer(android.os.Message msg) throws Exception {
-		if (toSneer == null) throw new Exception("Connection to Sneer was lost.");
+		if (toSneer == null) {
+			toast("No connection to Sneer");
+			return;
+		}
 		toSneer.send(msg);
 	}
 
 
-	private class FromSneerHandler extends Handler {
-
-		@Override
-		public void handleMessage(android.os.Message msg) {
-			Bundle data = msg.getData();
-			data.setClassLoader(Envelope.class.getClassLoader());
-			Object content = ((Envelope) data.getParcelable(ENVELOPE)).content;
-			if (content.equals("upToDate"))
+	private class FromSneerHandler extends Handler { @Override public void handleMessage(android.os.Message msg) {
+		Bundle data = msg.getData();
+		data.setClassLoader(Envelope.class.getClassLoader());
+		Object content = ((Envelope) data.getParcelable(ENVELOPE)).content;
+		if (content.equals(IPCProtocol.UP_TO_DATE))
+			activity.runOnUiThread(new Runnable() { @Override public void run() {
 				listener.onUpToDate();
-			else
-				listener.onMessage(getMessage(content));
+			}});
+		else
+			listener.onMessage(getMessage(content));
+	}}
 
-		}
-
-	}
 
 	private Message getMessage(Object content) {
 		final Map<String, Object> map = (Map<String, Object>)content;
 		return new Message() {
 			@Override
 			public boolean wasSentByMe() {
-				return (boolean) map.get("wasSentByMe");
+				return (Boolean)map.get(IPCProtocol.WAS_SENT_BY_ME);
 			}
 
 			@Override
 			public Object payload() {
-				return map.get("payload");
+				return map.get(IPCProtocol.PAYLOAD);
 			}
 		};
 	}
@@ -134,7 +157,19 @@ public class PartnerSession implements Closeable {
 
 	private void handleException(Exception e) {
 		e.printStackTrace();
-		Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+		toast(e.getMessage());
+	}
+
+
+	private void toast(String message) {
+		Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+	}
+
+
+	private static void await (CountDownLatch latch) {
+		try {
+			latch.await();
+		} catch (InterruptedException e) { throw new RuntimeException(e); }
 	}
 
 }
