@@ -31,7 +31,7 @@ public class LizardSpockActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		session = PartnerSession.join(this, getIntent(), new PartnerSession.Listener() {      /////////////Sneer API
+		session = PartnerSession.join(this, new PartnerSession.Listener() {      /////////////Sneer API
 			@Override
 			public void onUpToDate() {      /////////////Sneer API
 				refresh();
