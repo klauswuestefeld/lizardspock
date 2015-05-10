@@ -22,6 +22,7 @@ import static android.content.Context.BIND_IMPORTANT;
 import static android.os.Message.obtain;
 import static sneer.android.impl.Envelope.envelope;
 import static sneer.android.impl.IPCProtocol.ENVELOPE;
+import static sneer.android.impl.IPCProtocol.IS_OWN;
 
 public class PartnerSession implements Closeable {
 
@@ -30,7 +31,9 @@ public class PartnerSession implements Closeable {
 	}
 
 	public boolean wasStartedByMe() {
-		throw new RuntimeException("Not implemented yet");
+		Intent intent = activity.getIntent();
+		if (!intent.hasExtra(IS_OWN)) throw new IllegalStateException("Unable to determine who started the session.");
+		return intent.getBooleanExtra(IS_OWN, false);
 	}
 
 	public void send(Object payload) {
@@ -142,7 +145,7 @@ public class PartnerSession implements Closeable {
 		return new Message() {
 			@Override
 			public boolean wasSentByMe() {
-				return (Boolean)map.get(IPCProtocol.WAS_SENT_BY_ME);
+				return (Boolean)map.get(IS_OWN);
 			}
 
 			@Override
