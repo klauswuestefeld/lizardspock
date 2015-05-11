@@ -126,17 +126,24 @@ public class PartnerSession implements Closeable {
 	}
 
 
-	private class FromSneerHandler extends Handler { @Override public void handleMessage(android.os.Message msg) {
-		Bundle data = msg.getData();
-		data.setClassLoader(Envelope.class.getClassLoader());
-		Object content = ((Envelope) data.getParcelable(ENVELOPE)).content;
-		if (content.equals(IPCProtocol.UP_TO_DATE))
-			activity.runOnUiThread(new Runnable() { @Override public void run() {
+	private class FromSneerHandler extends Handler {
+		private boolean isUpToDate = false;
+
+		@Override public void handleMessage(android.os.Message msg) {
+			Bundle data = msg.getData();
+			data.setClassLoader(getClass().getClassLoader());
+			Object content = ((Envelope)data.getParcelable(ENVELOPE)).content;
+			if (content.equals(IPCProtocol.UP_TO_DATE))
+				isUpToDate = true;
+			else
+				listener.onMessage(getMessage(content));
+
+			if (isUpToDate)	activity.runOnUiThread(new Runnable() { @Override public void run() {
 				listener.onUpToDate();
 			}});
-		else
-			listener.onMessage(getMessage(content));
-	}}
+
+		}
+	}
 
 
 	private Message getMessage(Object content) {
