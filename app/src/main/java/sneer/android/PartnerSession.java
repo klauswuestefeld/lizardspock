@@ -88,8 +88,7 @@ public class PartnerSession implements Closeable {
 			connection,
 			BIND_AUTO_CREATE | BIND_IMPORTANT
 		);
-	    if (!success)
-		    finish("Unable to connect to Sneer");
+	    if (!success) finish("Unable to connect to Sneer");
     }
 
 
