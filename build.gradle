@@ -14,10 +14,6 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenCentral()
-//        https://oss.sonatype.org/content/repositories/releases/me/sneer/sneer-android-api/0.1.5/sneer-android-api-0.1.5.jar
-        maven {
-            url "https://oss.sonatype.org/content/repositories/releases"
-        }
+        jcenter()
     }
 }
