@@ -12,6 +12,9 @@ It is a plain Android project with a [single class](https://github.com/felipebue
 
 The parts of the code that use the 5 methods of the Sneer PartnerSession API are highlighted.
 
+Dependency
+----
+The dependency to the Sneer API is declared in the [app/build.gradle](https://github.com/felipebueno/lizardspock/blob/master/app/build.gradle) file.
 
 Running
 ----
