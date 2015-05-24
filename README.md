@@ -14,7 +14,11 @@ The parts of the code that use the 5 methods of the Sneer PartnerSession API are
 
 Dependency
 ----
-The dependency to the Sneer API is declared in the [app/build.gradle](https://github.com/felipebueno/lizardspock/blob/master/app/build.gradle) file.
+The dependency to the Sneer API is declared like this:
+```
+compile 'me.sneer:sneer-android-api:X.Y.Z'
+```
+in the dependencies section of the [app/build.gradle](https://github.com/felipebueno/lizardspock/blob/master/app/build.gradle) file. X.Y.Z stands for the latest version found [here](http://search.maven.org/#search|ga|1|sneer-android-api).
 
 Running
 ----
