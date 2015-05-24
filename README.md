@@ -23,12 +23,8 @@ in the dependencies section of the [app/build.gradle](https://github.com/felipeb
 Running
 ----
 
-  - Clone this project using git.
+  - Clone this git repository.
 
-  - The Sneer API is available from the [Maven Central](http://search.maven.org/#browse|488815224) repository. To get it for this project:
-    - Run gradle on Linux: ```./gradlew```
-    - Run gradle on Windows: ```gradlew.bat```
-
-  - Import the project into [Android Studio](http://developer.android.com/sdk/index.html).
+  - Import as a gradle project into [Android Studio](http://developer.android.com/sdk/index.html).
 
   - Run on devices with Sneer installed and [play](http://www.worldrps.com/gambit-play) :).
