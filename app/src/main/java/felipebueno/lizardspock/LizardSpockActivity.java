@@ -6,11 +6,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
-import android.util.Log;
 
 import sneer.android.Message;
 import sneer.android.PartnerSession;
 
+import static android.app.AlertDialog.*;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.LIZARD;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.PAPER;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.ROCK;
@@ -18,6 +18,9 @@ import static felipebueno.lizardspock.LizardSpockActivity.Move.SCISSORS;
 import static felipebueno.lizardspock.LizardSpockActivity.Move.SPOCK;
 
 public class LizardSpockActivity extends Activity {
+
+	private AlertDialog gameOverDialog;
+	private AlertDialog moveDialog;
 
 	enum Move { ROCK, PAPER, SCISSORS, LIZARD, SPOCK };
 
@@ -48,6 +51,16 @@ public class LizardSpockActivity extends Activity {
 	protected void onDestroy() {
 		session.close();     /////////////Sneer API
 		super.onDestroy();
+
+		if (gameOverDialog != null) {
+			gameOverDialog.dismiss();
+			gameOverDialog = null;
+		}
+
+		if (moveDialog != null) {
+			moveDialog.dismiss();
+			moveDialog = null;
+		}
 	}
 
 	private void handle(Message message) {
@@ -69,7 +82,11 @@ public class LizardSpockActivity extends Activity {
 			waitingForAdversarysMove = progressDialog("Waiting for adversary...");
 			return;
 		}
-		if (waitingForAdversarysMove != null) waitingForAdversarysMove.dismiss();
+
+		if (waitingForAdversarysMove != null) {
+			waitingForAdversarysMove.dismiss();
+			waitingForAdversarysMove = null;
+		}
 
 		gameOver();
 	}
@@ -77,13 +94,17 @@ public class LizardSpockActivity extends Activity {
 
 	private void waitForYourMove() {
 		if (waitingForYourMove) return;
+		if (moveDialog != null) return;
+		if (this.isFinishing()) return;
+
 		waitingForYourMove = true;
 
-		alert("Choose Your Move", options("Rock", "Paper", "Scissors", "Lizard", "Spock"), new DialogInterface.OnClickListener() { @Override
-		public void onClick(DialogInterface dialog, int option) {
-			String move = Move.values()[option].name();
-			session.send(move);  ///////////// Sneer API
-		}});
+		moveDialog = builder("Choose Your Move")
+						.setItems(options("Rock", "Paper", "Scissors", "Lizard", "Spock"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int option) {
+							String move = Move.values()[option].name();
+							session.send(move);  ///////////// Sneer API
+						}})
+						.show();
 	}
 
 
@@ -91,9 +112,14 @@ public class LizardSpockActivity extends Activity {
 		String outcome = outcome();
 		String message = "You used " + yourMove + ". Adversary used " + adversarysMove + ".";
 
-		alert(outcome + " " + message, options("OK"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
-			finish();
-		}});
+		if (gameOverDialog != null) return;
+		if (this.isFinishing()) return;
+
+		gameOverDialog = builder(outcome + " " + message)
+							.setPositiveButton("OK", new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int which) {
+								finish();
+							}})
+							.show();
 	}
 
 
@@ -119,25 +145,28 @@ public class LizardSpockActivity extends Activity {
 	}
 
 
-	private ProgressDialog progressDialog(String message) {
-		ProgressDialog ret = ProgressDialog.show(this, null, message);
-		ret.setIndeterminate(true);
-		ret.setCancelable(true);
-		ret.setOnCancelListener(new OnCancelListener() {  @Override public void onCancel(DialogInterface dialog) {
-			finish();
-		}});
-		return ret;
+	private Builder builder(String title) {
+		return new Builder(this)
+				.setTitle(title)
+				.setOnCancelListener(new OnCancelListener() { @Override public void onCancel(DialogInterface dialog) {
+					finish();
+				}});
 	}
 
 
-	protected void alert(String title, CharSequence[] items, DialogInterface.OnClickListener onClickListener) {
-		new AlertDialog.Builder(this)
-			.setTitle(title)
-			.setItems(items, onClickListener)
-			.setOnCancelListener(new OnCancelListener() {  @Override public void onCancel(DialogInterface dialog) {
-				finish();
-			}})
-            .show();
+	private ProgressDialog progressDialog(String message) {
+		if (waitingForAdversarysMove != null) return null;
+		if (this.isFinishing()) return null;
+
+		ProgressDialog ret = ProgressDialog.show(this, null, message);
+		ret.setIndeterminate(true);
+		ret.setCancelable(true);
+		ret.setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+			finish();
+		}});
+		return ret;
 	}
 
 
