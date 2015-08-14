@@ -34,14 +34,14 @@ public class LizardSpockActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		session = PartnerSession.join(this, new PartnerSession.Listener() {      /////////////Sneer API
+		session = PartnerSession.join(this, new PartnerSession.Listener() {  /////////////Sneer API call
 			@Override
-			public void onUpToDate() {      /////////////Sneer API
+			public void onUpToDate() {
 				refresh();
 			}
 
 			@Override
-			public void onMessage(Message message) {      /////////////Sneer API
+			public void onMessage(Message message) {
 				handle(message);
 			}
 		});
@@ -49,7 +49,7 @@ public class LizardSpockActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		session.close();     /////////////Sneer API
+		session.close();                                        /////////////Sneer API call
 		super.onDestroy();
 
 		if (gameOverDialog != null) {
@@ -64,8 +64,8 @@ public class LizardSpockActivity extends Activity {
 	}
 
 	private void handle(Message message) {
-		Move move = Move.valueOf((String) message.payload());
-		if (message.wasSentByMe())
+		Move move = Move.valueOf((String) message.payload());   /////////////Sneer API call
+		if (message.wasSentByMe())                              /////////////Sneer API call
 			yourMove = move;
 		else
 			adversarysMove = move;
@@ -102,7 +102,7 @@ public class LizardSpockActivity extends Activity {
 		moveDialog = builder("Choose Your Move")
 						.setItems(options("Rock", "Paper", "Scissors", "Lizard", "Spock"), new DialogInterface.OnClickListener() { @Override public void onClick(DialogInterface dialog, int option) {
 							String move = Move.values()[option].name();
-							session.send(move);  ///////////// Sneer API
+							session.send(move);      ///////////// Sneer API
 						}})
 						.show();
 	}
