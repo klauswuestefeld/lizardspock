@@ -1,4 +1,4 @@
-[![IMAGE ALT TEXT HERE](https://media.giphy.com/media/xmCYph8zOH504/giphy.gif)
+![IMAGE ALT TEXT HERE](https://media.giphy.com/media/xmCYph8zOH504/giphy.gif)
 
 
 Sneer API - 5 Minute Tutorial
