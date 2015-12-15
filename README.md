@@ -27,4 +27,4 @@ Running
 
   - Import as a gradle project into [Android Studio](http://developer.android.com/sdk/index.html).
 
-  - Run on devices with the [latest Sneer APK](https://github.com/sneerteam/sneer/releases/latest) installed and [play](http://www.worldrps.com/gambit-play) :).
+  - Run on devices with the [latest Sneer APK](https://github.com/sneerteam/sneer/releases/latest) installed and [play](http://worldrps.com/advanced-rps/) :).
