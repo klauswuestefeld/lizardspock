@@ -16,7 +16,7 @@ Dependency
 ----
 The dependency to the Sneer API is declared like this:
 ```
-compile 'me.sneer:sneer-android-api:X.Y.Z'
+compile 'me.sneer:sneer-android-api:X.Y.Z@aar'
 ```
 in the dependencies section of the [app/build.gradle](https://github.com/felipebueno/lizardspock/blob/master/app/build.gradle) file. X.Y.Z stands for the latest version found [here](http://search.maven.org/#search|ga|1|sneer-android-api).
 
